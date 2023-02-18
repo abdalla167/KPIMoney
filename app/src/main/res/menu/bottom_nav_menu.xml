@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/navigation_home"
+        android:icon="@drawable/ic_home_black_24dp"
+        android:title="@string/title_home"
+        />
+    <item
+        android:id="@+id/navigation_offer_api"
+        android:icon="@drawable/iconeofferapi"
+        android:title="@string/api_offers"
+        />
+
+
+    <item
+        android:id="@+id/navigation_redeem"
+        android:icon="@drawable/redeemicon"
+        android:title="@string/redeem"
+        />
+    <item
+        android:id="@+id/navigation_refeer"
+        android:icon="@drawable/link"
+        android:title="Refer"
+        />
+    <item
+        android:id="@+id/navigation_moreoption"
+        android:icon="@drawable/moreoption"
+        android:title="More Options"
+        />
+
+
+
+</menu>

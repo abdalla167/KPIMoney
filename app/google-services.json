@@ -1,0 +1,49 @@
+{
+  "project_info": {
+    "project_number": "714081973052",
+    "firebase_url": "https://kpi-money-default-rtdb.firebaseio.com",
+    "project_id": "kpi-money",
+    "storage_bucket": "kpi-money.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:714081973052:android:cf775d4c6d62e36662e439",
+        "android_client_info": {
+          "package_name": "com.kpi.money"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "714081973052-48d2hp9r3110lecm0h47au8pobd5srkp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.kpi.money",
+            "certificate_hash": "c7162826693a4a88df78462e9540d688c7bd5862"
+          }
+        },
+        {
+          "client_id": "714081973052-jq6gba16n533g369a37jjhpdriomk57d.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD_IlBUrojfFsCLRvMQp36px73Xm2z-9-E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "714081973052-fc9e1srd4tvkvnaro6cnhfgg628jkoa9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      },
+      "admob_app_id": "ca-app-pub-8411280933757321~8637645526"
+    }
+  ],
+  "configuration_version": "1"
+}

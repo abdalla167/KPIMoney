@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/navigation_home">
+
+    <fragment
+        android:id="@+id/navigation_home"
+        android:name="com.kpi.money.fragments.HomFragmentSecoundEdite"
+        android:label="@string/title_home"
+        tools:layout="@layout/fragment_home_new" />
+
+    <fragment
+        android:id="@+id/navigation_redeem"
+        android:name="com.kpi.money.fragments.RedeemFragment"
+        android:label="@string/title_dashboard"
+        tools:layout="@layout/fragment_redeem" />
+
+    <fragment
+        android:id="@+id/navigation_refeer"
+        android:name="com.kpi.money.fragments.ReferFragment"
+        android:label="@string/title_notifications"
+        tools:layout="@layout/fragment_refer"
+
+        />
+
+    <fragment
+        android:id="@+id/navigation_moreoption"
+        android:name="com.kpi.money.fragments.MoreOption"
+        android:label="InstructionsFragment"
+        tools:layout="@layout/fragment_more_option"
+        />
+    <fragment
+        android:id="@+id/navigation_offer_api"
+        android:name="com.kpi.money.fragments.ApiFragment"
+        android:label="fragment_api"
+        tools:layout="@layout/fragment_api" />
+</navigation>

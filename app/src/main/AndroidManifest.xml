@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.kpi.money" > <!-- Added in v3.1 -->
+    <uses-sdk tools:overrideLibrary="com.google.firebase.messaging,com.google.firebase.iid" />
+    <!-- Required Permissions -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" /> <!-- Required for Notifications -->
+    <uses-permission android:name=".permission.C2D_MESSAGE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATION" />
+    <uses-permission android:name="android.permission.ACCESS_NOTIFICATION_POLICY" />
+    <uses-permission android:name="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE"
+        tools:ignore="ProtectedPermissions" />
+
+    <permission
+        android:name=".permission.C2D_MESSAGE"
+        android:protectionLevel="signature" />
+
+    <application
+        android:name=".app.App"
+        android:fullBackupContent="true"
+        android:hardwareAccelerated="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme"
+        android:usesCleartextTraffic="true"
+        tools:replace="android:icon" >
+        <activity
+            android:name=".activities.WebsiteActivity"
+            android:exported="false" />
+        <!-- Added in v3.1 -->
+        <uses-library
+            android:name="org.apache.http.legacy"
+            android:required="false" />
+
+        <activity
+            android:name=".activities.AppActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:exported="true"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:theme="@style/MainTheme"
+            tools:node="merge" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".activities.ActivityBase"
+            android:configChanges="keyboardHidden|orientation"
+            android:exported="true"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            tools:node="merge" />
+        <activity
+            android:name=".activities.RecoveryActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:exported="true"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            tools:node="merge" />
+        <activity
+            android:name=".activities.LoginActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:exported="false"
+            android:label="@string/title_activity_login"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="portrait"
+            tools:node="merge" />
+        <activity
+            android:name=".activities.SignupActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:exported="false"
+            android:label="@string/title_activity_sign_up"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"
+            tools:node="merge" />
+        <activity
+            android:name=".activities.IntroActivity"
+            android:exported="false"
+            android:theme="@style/AppTheme.NoActionBar"
+            tools:node="merge" />
+        <activity
+            android:name=".activities.MainActivityvTwo"
+            android:exported="false"
+            android:hardwareAccelerated="true"
+            android:label="@string/title_activity_main_activityv_two"
+            android:theme="@style/AppTheme.NoActionBar"
+            tools:node="merge" />
+        <activity
+            android:name=".activities.AboutActivity"
+            android:exported="false"
+            tools:node="merge" />
+        <activity
+            android:name=".activities.WallActivity"
+            android:exported="false"
+            tools:node="merge" />
+        <activity
+            android:name=".activities.FragmentsActivity"
+            android:exported="false"
+            tools:node="merge" />
+        <activity
+            android:name=".activities.SpinWheelActivity"
+            android:exported="false"
+            tools:node="merge" />
+        <activity
+            android:name=".activities.OfferDetailsActivity"
+            android:exported="false"
+            tools:node="merge" />
+        <activity
+            android:name=".activities.AccountActvity"
+            android:exported="false"
+            android:windowSoftInputMode="stateHidden"
+            tools:node="merge" /> <!-- Firebase Components -->
+        <service
+            android:name=".services.MyFirebaseMessagingService"
+            android:exported="false"
+            tools:node="merge" >
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service> <!-- END Firebase Components -->
+        <!-- Web Videos Activities -->
+        <activity
+            android:name="com.thefinestartist.ytpa.YouTubePlayerActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:exported="false"
+            android:screenOrientation="sensor"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
+            tools:node="merge" />
+
+        <meta-data
+            android:name="com.thefinestartist.ytpa.YouTubePlayerActivity.ApiKey"
+            android:value="AIzaSyAOfxiG4aV66h3XmssCEkP3qCvCqMbDGDI" /> <!-- END Web Video Activity -->
+        <!-- Admob components -->
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="@string/admob_appId" />
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" /> <!-- END Admob components -->
+        <!-- Facebook components -->
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id" />
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
+
+        <activity
+            android:name="com.facebook.FacebookActivity"
+            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+            android:exported="true"
+            android:label="@string/app_name"
+            tools:node="merge" />
+        <activity
+            android:name="com.facebook.CustomTabActivity"
+            android:exported="true"
+            tools:node="merge" >
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="@string/fb_login_protocol_scheme" />
+            </intent-filter>
+        </activity>
+    </application>
+
+</manifest>

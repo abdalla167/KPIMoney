@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_margin="@dimen/space5"
+    app:cardCornerRadius="@dimen/space10">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+    <com.kpi.money.views.TextView_Lato
+        android:id="@+id/date"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:layout_marginStart="5dp"
+        android:visibility="gone"
+        android:layout_marginTop="@dimen/space5"
+        android:textColor="@color/text_gray"
+        android:textSize="@dimen/text_size_12"
+        android:textStyle="bold" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/SingleItem"
+        android:orientation="vertical"
+        android:background="@color/white">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="@dimen/space18"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="@dimen/space10"
+            >
+<androidx.cardview.widget.CardView
+    android:layout_width="30dp"
+    android:contentDescription="@string/app_name"
+    android:layout_height="@dimen/space30"
+    android:layout_gravity="center"
+    android:layout_marginLeft="3dp"
+    app:cardCornerRadius="@dimen/space10"
+    >
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/space5"
+        android:contentDescription="@string/app_name"
+        android:src="@drawable/transactionpoints"
+        android:layout_gravity="center"
+        />
+</androidx.cardview.widget.CardView>
+
+
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+              android:layout_marginLeft="@dimen/space5"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <com.kpi.money.views.TextView_Lato
+                    android:id="@+id/tnName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/text_black"
+                    android:textSize="@dimen/text_size_14" />
+
+                <com.kpi.money.views.TextView_Lato
+                    android:id="@+id/tnType"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/space8"
+                    android:textColor="@color/text_gray"
+                    android:textSize="@dimen/text_size_10" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:gravity="center_vertical"
+                android:layout_gravity="center"
+                android:orientation="vertical">
+
+                <com.kpi.money.views.TextView_Lato
+                    android:id="@+id/amount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="@string/placeholder"
+                    android:textSize="@dimen/text_size_20" />
+
+                <com.kpi.money.views.Textview_lato_thin
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/statusName"
+                    android:layout_gravity="center_horizontal"
+                    android:background="@drawable/round_rect_bg"
+                    android:text="@string/placeholder"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_size_10"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="@dimen/space18"
+            android:background="#ececec" />
+
+    </LinearLayout>
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

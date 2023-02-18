@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">KPI Money</string>
+
+    <string name="account_verification">Account Verification</string>
+    <string name="account_verified">Your Account has been activated.</string>
+    <string name="logged_in_as">you are logged in as </string>
+    <string name="chat">Chat with us</string>
+    <string name="logout">Log out</string>
+
+    <string name="confirm_otp">CONFIRM OTP</string>
+    <string name="resendCode">Resend Code</string>
+    <string name="otp_resent">The OTP Code has been resent</string>
+    <string name="otp_code_invalid">Invalid OTP Code</string>
+    <string name="otp_code_expired">Code expired, please click resend for new code</string>
+    <string name="didntReceivedotp">Didn’t Receive the OTP?</string>
+
+    <string name="processing_wait">Processing, please wait ..</string>
+    <string name="otp_sent_text">Enter the code that we sent to your email address to activate your account.</string>
+
+    <string name="placeholder"> ------ </string>
+
+    <string name="offerWalls">OfferWalls</string>
+    <string name="api_offers">API Offers</string>
+
+    <string name="offer_details">Offer Details</string>
+    <string name="complete_offer">COMPLETE OFFER</string>
+    <string name="complete_later">i\'ll Complete Later</string>
+    <string name="earn">Earn</string>
+    <string name="on_this_offer">on this Offer</string>
+    <string name="waiting_for_completion">Waiting for Completion ..</string>
+    <string name="checking_offer_status">Checking offer status..</string>
+
+    <string name="offer_completed">you have Completed this Offer</string>
+    <string name="offer_rejected">Offer Rejected</string>
+    <string name="offer_processing">We are Processing this Offer</string>
+
+    <string name="home">Home</string>
+    <string name="instructions">instructions</string>
+    <string name="text1">How does it work?</string>
+    <string name="text2">KPI Money Rewards is an app that lets you redeem prizes such as gift cards, discounts and vouchers by earning points through the KPI Money Rewards Android App (iOS app coming soon).\nOur app offers various methods to earn points such as by completing offers, downloading and playing games, answering surveys and even by watching TV (multiple channels are available).\nAfter earning points, you are able to use your points to redeem for our selection of gift cards and vouchers. These rewards includes gift cards from PayPal, Amazon, Play Store, XBox Store and Play Station Network Store.</string>
+    <string name="text3">Will I get my reward?</string>
+    <string name="text4">Yes you will.\nRewards generally arrive between 1 weeks and may be delayed longer depending on stock or volume issues (all reward processing is done manually by our staff).\nHowever, you can be rest assured that you will get your reward, even if it may sometimes arrive a little later than expected.</string>
+    <string name="text5">What is the proper way to start an offer?</string>
+    <string name="text6">Ensure that you started the offer correctly.The proper steps are:\n\nStep 1: Click Offer Get Offer button.\nStep 2: Download the app when the Play Store page for the app opens\nStep 3: Launch the downloaded app\nStep 4: Complete the offer requirements\n\nAttempting to start an offer without following these steps may result in the offers tracking to not work properly and may cause missing points.\nPlease also note that this app should only be used on 1 device at a time only. Using KPI Money Rewards on multiple devices simultaneously may cause you to not receive points.</string>
+    <string name="text7">I completed an offer but did not receive my points?</string>
+    <string name="text8">If you encounter such a situation, please double check the following:</string>
+    <string name="text9">1. Check if you completed the offers requirements correctly.</string>
+    <string name="text10">For example:\n- If an offer requires you to Download, install and explore, this means that you should ensure that you have downloaded the app, opened it and explored the app for at least 2.5 minutes.\n- If an offer requires you to Complete Level 11, this means that you should finish level 11 and be at level 12 or above.\n- If an offer requires you to Reach Level 20, this means that you should be at level 20 or above.\n- If an offer requires you to Complete your profile / registration, this means that you should complete your personal profile on the app/website.\n- If an offer requires you to Make a purchase, this means that you should make a valid purchase. A trial is most of the time not considered a valid purchase.\n</string>
+    <string name="text11">2. Ensure that you are not using VPN or Ad-blockers.</string>
+    <string name="text12">\n3. Ensure that you started the offer correctly. The proper steps are:</string>
+    <string name="text13">Step 1: Click Offers Get Offer button.\nStep 2: Download the app when the Play Store page for the app opens.\nStep 3: Launch the app.\nStep 4: Complete the offers requirements.\n Attempting to start an offer without following these steps may result in the offers tracking to not work properly and may cause missing points.</string>
+    <string name="text14">\n4. Ensure that you were indeed a New User.</string>
+    <string name="text15">Most offers require you to be a New User. If you had installed the app on your current device in the past, even if you have uninstalled it, you are still not considered a New User. If the offer requires you to be a new user, then you will only receive points if you are truly a new user.\n</string>
+    <string name="refer">Refer &amp; Earn</string>
+    <string name="redeem">Redeem</string>
+    <string name="about">About Us</string>
+    <string name="transactions">Transactions</string>
+    <string name="share">Share This App</string>
+    <string name="rate_this_app">Rate The App</string>
+    <string name="policy">Privacy Policy</string>
+    <string name="contact">Contact Us</string>
+
+    <string name="all_videos">All Videos</string>
+    <string name="loading_video">Loading Video ..</string>
+    <string name="watch_till_end">Watch till End to get Points !</string>
+    <string name="no_videos_available_try_again">No videos available</string>
+    <string name="already_watched">Video Watched Already ! No points pls..</string>
+    <string name="no_videos_available">No videos available, please try again After SomeTime !!</string>
+
+    <string name="loading">Loading ..</string>
+    <string name="no_transactions">No Transactions Found !</string>
+    <string name="nothing_found">Nothing Found Here !</string>
+
+    <string name="congratulations">Congratulations !!</string>
+    <string name="successfull_received">Successfully Received</string>
+    <string name="invitation_bonus_received">Invitation Bonus Received</string>
+    <string name="refer_bonus_received">Referral Bonus Received</string>
+
+
+    <string name="adnetwork_disabled">AdNetwork Disabled</string>
+    <string name="adnetwork_disabled_mesage">We have temporarly disabled this AdNetwork, please try again after some time</string>
+
+    <string name="success">Successful</string>
+    <string name="rejected">Rejected</string>
+    <string name="failed">Failed</string>
+    <string name="pending">Processing</string>
+
+    <string name="spin">SPIN</string>
+    <string name="spin_won_nothing">Sorry !</string>
+    <string name="spin_won_nothing_desc">you got Nothing.. \n\n Please try again</string>
+    <string name="spin_reward_taken">your Chance Completed \n\n Try again after ..</string>
+
+    <string name="redeem_success_title"> Redeem Successful !</string>
+    <string name="redeem_recevied">Redeem request received for</string>
+    <string name="redeem_succes_message"> You will receive your payment 7 days after the withdrawal request. Thank you for waiting</string>
+
+    <string name="error">Error..</string>
+    <string name="enter_something">Please Enter Something</string>
+
+    <!--  Currency -->
+    <string name="app_currency">Points</string>
+
+    <string name="updating_balance">updating Balance</string>
+    <string name="update_balance">update Balance</string>
+
+    <!-- Refer -->
+    <string name="invite">Invite Friends</string>
+    <string name="get_bonus">Get Bonus</string>
+    <string name="tap_to_copy">Tap to copy</string>
+    <string name="refer_code">Your Referral Code is</string>
+    <string name="placeholder_referer"> Enter INVITATION Code</string>
+    <string name="referDescription">You and Your Friend both Get</string>
+    <string name="refer_code_copied">Refer Code Copied to Clipboard</string>
+
+    <string name="refer_text">by using my Refer Code : </string>
+    <string name="self_refer">You Cannot Refer YourSelf</string>
+    <string name="invalid_code">Invalid Code</string>
+    <string name="enter_valid_code">Please Enter Valid Code</string>
+    <string name="choose_one">Choose one</string>
+
+    <!-- Facebook -->
+    <string name="facebook_app_id">536460578049621</string>
+    <string name="fb_login_protocol_scheme">fb536460578049621</string>
+
+    <!-- ADMOB AppID -->
+    <string name="admob_appId" translatable="false">ca-app-pub-8830750863521432~2739761098</string>
+
+    <!-- ADMOB Banner -->
+    <string name="banner_ad_unit_id" translatable="false">ca-app-pub-8830750863521432/7800516080</string>
+    <!-- reward -->
+    <string name="reward_id" translatable="false">ca-app-pub-8830750863521432/6996772124</string>
+
+    <!-- ADMOB Interstitial -->
+ <string name="admob_interstitial_delay">5000</string>
+ <string name="interstitial_ad_unit_id" translatable="false">ca-app-pub-8830750863521432/5174352741</string>
+
+<!--   ca-app-pub-6319590371669617/2014178848-->
+<!--  -->
+
+
+
+
+    <!--  General Texts  -->
+    <string name="click_back_again">Please click BACK again to exit</string>
+
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
+    <string name="proceed">Proceed</string>
+    <string name="oops">Oops ..</string>
+    <string name="no_enough">No Enough</string>
+    <string name="to">to</string>
+    <string name="get">Get</string>
+
+    <integer name="daily_checkin_timer_size">26</integer>
+    <string name="bonus_taken">Bonus Taken Already ..</string>
+    <string name="try_after">Try again After SomeTime !!</string>
+    <string name="daily_reward_taken">Daily Reward Taken Already \n\n Try again after ..</string>
+    <string name="server_problem">server problem! Try Again after some time</string>
+
+    <string name="title_server_problem">Server not Responding !</string>
+    <string name="msg_server_problem">Looks like our Server not Responding, please try again after some time</string>
+
+    <string name="offerwall_not_loaded">Loading .. \n\n please try again After SomeTime !!</string>
+
+    <!-- Navigation Drawer -->
+    <string name="navigation_drawer_opened">The navigation drawer is opened</string>
+    <string name="navigation_drawer_closed">The navigation drawer is closed</string>
+    <string name="tag_nav_drawer_main_entry">nav_drawer_main_entry</string>
+
+    <!-- Login And SignUp -->
+    <string name="settings_file">account</string>
+    <string name="settings_account_id">account_id</string>
+    <string name="settings_account_username">account_username</string>
+    <string name="settings_account_access_token">access_token</string>
+
+    <string name="processing">Processing ..</string>
+    <string name="please_wait">Please wait ..</string>
+
+    <string name="update">Update</string>
+    <string name="update_app">Update App to Earn More</string>
+    <string name="update_app_description">Many more Earning Features Added.</string>
+
+    <string name="retry">Retry</string>
+    <string name="title_network_error">Network Not Detected !</string>
+    <string name="msg_network_error">Please check your Internet connection</string>
+    <string name="msg_account_blocked">This account is blocked by a moderator.</string>
+    <string name="msg_no_such_user_in_bd">No such user in database</string>
+    <string name="msg_password_reset_link_sent">A message with link to reset your password has been sent to your email.</string>
+
+    <string name="action_login">Log in</string>
+    <string name="action_signup">Sign up</string>
+    <string name="title_activity_login">Log In</string>
+    <string name="title_activity_sign_up">Sign Up</string>
+    <string name="action_continue">Continue</string>
+    <string name="action_forgot_password">Forgot password?</string>
+
+    <string name="placeholder_password">Password</string>
+    <string name="placeholder_login">Username</string>
+    <string name="placeholder_fullname">Fullname</string>
+    <string name="placeholder_email">Email</string>
+
+    <string name="error_field_empty">Required fields are empty</string>
+    <string name="error_wrong_format">Wrong format</string>
+    <string name="error_signin">Incorrect username or password</string>
+    <string name="error_login_taken">Username is already taken</string>
+    <string name="error_email_taken">Email is already registered</string>
+    <string name="please_login">please login ..</string>
+    <string name="error_email">Email invalid ..</string>
+    <string name="error_data_loading">When loading data error has occurred. Check your network connection.</string>
+    <string name="error_small_password">Minimum 6 characters</string>
+    <string name="error_small_username">Minimum 5 characters</string>
+
+
+    <string name="error_device_exists">Device Registered Already !</string>
+    <string name="error_device_exists_description">We allow one Account for one device, please login to your existing account ..</string>
+
+    <!-- App INTRO Titles & Description -->
+    <string name="slide_1_title">KPI Money App.</string>
+    <string name="slide_2_title">Earn by Completing offers!</string>
+    <string name="slide_3_title">Withdraw money!</string>
+    <string name="slide_4_title">Watch the video</string>
+    <string name="slide_1_desc">Complete offers and watch videos Complete offers..and earn money.</string>
+    <string name="slide_2_desc">Earn money easily with offers Download the task and complete the required.</string>
+    <string name="slide_3_desc">When you reach the minimum withdrawal, you can get your winnings.</string>
+    <string name="slide_4_desc">You can earn a lot of money by watching ads and videos without any fatigue.</string>
+    <string name="title_activity_main_activityv_two">MainActivityvTwo</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!-- Instructions on How to use App -->
+
+</resources>
