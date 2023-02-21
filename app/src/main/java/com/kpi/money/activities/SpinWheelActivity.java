@@ -270,62 +270,62 @@ public class SpinWheelActivity extends ActivityBase {
             showpDialog();
 
             CustomRequest dailyCheckinRequest = new CustomRequest(Request.Method.POST, ACCOUNT_SPIN,null, new Response.Listener<JSONObject>() {
-                        @Override
-                        public void onResponse(JSONObject response) {
+                @Override
+                public void onResponse(JSONObject response) {
 
-                            hidepDialog();
+                    hidepDialog();
 
-                            try{
+                    try{
 
-                                JSONObject Response = new JSONObject(App.getInstance().deData(response.toString()));
+                        JSONObject Response = new JSONObject(App.getInstance().deData(response.toString()));
 
-                                if(!Response.getBoolean("error") && Response.getInt("error_code") == ERROR_SUCCESS){
+                        if(!Response.getBoolean("error") && Response.getInt("error_code") == ERROR_SUCCESS){
 
-                                    // Reward received Succesfully
+                            // Reward received Succesfully
 
-                                    App.getInstance().store("spin_done",Current_Date);
+                            App.getInstance().store("spin_done",Current_Date);
 
-                                    Dialogs.succesDialog(context, getResources().getString(R.string.congratulations), SpinRewardAmount + " " + getResources().getString(R.string.app_currency) + " " + getResources().getString(R.string.successfull_received), false, false, "", getResources().getString(R.string.ok), new SweetAlertDialog.OnSweetClickListener() {
-                                        @Override
-                                        public void onClick(SweetAlertDialog sweetAlertDialog) {
-                                            displayInterstitialAd();
-                                            init_admob();
-                                            sweetAlertDialog.dismissWithAnimation();
-                                        }
-                                    });
-
-                                }else if(Response.getInt("error_code") == 410){
-
-                                    // Reward Taken Today - Try Again Tomorrow
-                                    showTimerDialog(Response.getInt("error_description"));
-
-                                }else if(Response.getInt("error_code") == 699 || Response.getInt("error_code") == 999){
-
-                                    Dialogs.validationError(context,Response.getInt("error_code"));
-
-                                }else if(DEBUG_MODE){
-
-                                    // For Testing ONLY - intended for Developer Use ONLY not visible for Normal App user
-                                    Dialogs.errorDialog(context,Response.getString("error_code"),Response.getString("error_description"),false,false,"",getResources().getString(R.string.ok),null);
-
-                                }else{
-
-                                    // Server error
-                                    Dialogs.serverError(context, getResources().getString(R.string.ok), null);
-
+                            Dialogs.succesDialog(context, getResources().getString(R.string.congratulations), SpinRewardAmount + " " + getResources().getString(R.string.app_currency) + " " + getResources().getString(R.string.successfull_received), false, false, "", getResources().getString(R.string.ok), new SweetAlertDialog.OnSweetClickListener() {
+                                @Override
+                                public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                    displayInterstitialAd();
+                                    init_admob();
+                                    sweetAlertDialog.dismissWithAnimation();
                                 }
+                            });
 
-                            }catch (Exception e){
+                        }else if(Response.getInt("error_code") == 410){
 
-                                if(!DEBUG_MODE){
-                                    Dialogs.serverError(context, getResources().getString(R.string.ok), null);
-                                }else{
-                                    Dialogs.errorDialog(context,"Got Error",e.toString() + ", please contact developer immediately",false,false,"",getResources().getString(R.string.ok),null);
-                                }
+                            // Reward Taken Today - Try Again Tomorrow
+                            showTimerDialog(Response.getInt("error_description"));
 
-                            }
+                        }else if(Response.getInt("error_code") == 699 || Response.getInt("error_code") == 999){
 
-                        }},new Response.ErrorListener() {
+                            Dialogs.validationError(context,Response.getInt("error_code"));
+
+                        }else if(DEBUG_MODE){
+
+                            // For Testing ONLY - intended for Developer Use ONLY not visible for Normal App user
+                            Dialogs.errorDialog(context,Response.getString("error_code"),Response.getString("error_description"),false,false,"",getResources().getString(R.string.ok),null);
+
+                        }else{
+
+                            // Server error
+                            Dialogs.serverError(context, getResources().getString(R.string.ok), null);
+
+                        }
+
+                    }catch (Exception e){
+
+                        if(!DEBUG_MODE){
+                            Dialogs.serverError(context, getResources().getString(R.string.ok), null);
+                        }else{
+                            Dialogs.errorDialog(context,"Got Error",e.toString() + ", please contact developer immediately",false,false,"",getResources().getString(R.string.ok),null);
+                        }
+
+                    }
+
+                }},new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
 

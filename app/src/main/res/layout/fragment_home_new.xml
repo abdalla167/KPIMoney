@@ -9,7 +9,6 @@
     android:windowSoftInputMode="stateHidden"
     >
 
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout11_scound"
         android:layout_width="match_parent"
@@ -110,12 +109,13 @@
 
 
         <androidx.cardview.widget.CardView
-            android:id="@+id/cardView8_scound"
+            android:id="@+id/cardviewAdds"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_margin="@dimen/space5"
             app:cardCornerRadius="@dimen/space15"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -129,7 +129,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/cairo_semibold"
-                    android:text="Spin &amp; Win "
+                    android:text="Watching &amp; Win "
                     android:textColor="@color/black"
                     android:textSize="15sp"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -144,11 +144,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/cairo_semibold"
-                    android:text="Spin while"
+                    android:text="Watching ads and win"
                     android:textColor="@color/black"
                     android:textSize="8sp"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/imageView12"
                     app:layout_constraintHorizontal_bias="0.162"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
@@ -171,9 +171,10 @@
 
                 <ImageView
 
+                    android:id="@+id/imageView12"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
-                    android:src="@drawable/spinwin"
+                    android:src="@drawable/rewardadd"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHeight_percent="0.4"
@@ -189,14 +190,14 @@
         </androidx.cardview.widget.CardView>
 
         <androidx.cardview.widget.CardView
-            android:id="@+id/cardView10_scound"
+            android:id="@+id/watchingvedio"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_margin="@dimen/space5"
             app:cardCornerRadius="@dimen/space15"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintHorizontal_bias="0.13"
-            app:layout_constraintStart_toEndOf="@+id/cardView8_scound"
+            app:layout_constraintStart_toEndOf="@+id/cardviewAdds"
 
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintWidth_percent="0.32">
@@ -270,14 +271,14 @@
         </androidx.cardview.widget.CardView>
 
         <androidx.cardview.widget.CardView
-            android:id="@+id/cardView9_scound"
+            android:id="@+id/cardadwebsite"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_margin="@dimen/space5"
             app:cardCornerRadius="@dimen/space15"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintHorizontal_bias="0.705"
-            app:layout_constraintStart_toEndOf="@+id/cardView10_scound"
+            app:layout_constraintStart_toEndOf="@+id/watchingvedio"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintWidth_percent="0.32">
 
@@ -352,7 +353,7 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/cardView11_scound"
+        android:id="@+id/cardad"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginLeft="@dimen/space5"
@@ -367,33 +368,33 @@
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout2_scound"
         app:layout_constraintVertical_bias="0.006">
 
+
+
         <com.google.android.gms.ads.AdView
             android:id="@+id/adView_secound"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_margin="@dimen/space5"
             android:backgroundTint="@color/white"
             app:adSize="BANNER"
-            app:adUnitId="@string/banner_ad_unit_id"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:adUnitId="ca-app-pub-3940256099942544/6300978111"
 
             >
 
         </com.google.android.gms.ads.AdView>
-
-
     </androidx.cardview.widget.CardView>
+
+
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView12_scound"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:layout_margin="5dp"
         app:cardCornerRadius="@dimen/space5"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHeight_percent="0.17"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cardView11_scound"
+        app:layout_constraintTop_toBottomOf="@+id/cardad"
         app:layout_constraintVertical_bias="0.017">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -401,19 +402,18 @@
             android:layout_height="match_parent">
 
 
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/offerwalls_list_secound"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/offerwalls_list_secound"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
 
-
-            />
+                app:layout_constraintStart_toStartOf="parent" />
 
             <com.wang.avi.AVLoadingIndicatorView
                 android:id="@+id/progressBarOfferwalls_secound"
                 android:layout_width="0dp"
-                android:layout_height="0dp"
+                android:layout_height="wrap_content"
                 app:indicatorColor="@color/colorPrimary"
                 app:indicatorName="BallPulseIndicator"
                 app:layout_constraintBottom_toBottomOf="@+id/offerwalls_list_secound"
@@ -432,13 +432,22 @@
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHeight_percent="0.5"
+        app:layout_constraintHeight_percent="0.58"
+        app:layout_constraintHorizontal_bias="1.0"
+
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cardView12_scound"
-        app:layout_constraintVertical_bias="1.0">
+        app:layout_constraintVertical_bias="0.409">
+
+        <WebView
+            android:id="@+id/webView1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_api_fragmentscound"
             android:layout_width="match_parent"
+            android:visibility="gone"
             android:layout_height="match_parent"
             app:layout_constraintTop_toTopOf="parent">
 
@@ -453,14 +462,15 @@
             android:layout_height="0dp"
             app:indicatorColor="@color/colorPrimary"
             app:indicatorName="BallPulseIndicator"
-            app:layout_constraintBottom_toBottomOf="@+id/offerwalls_list_secound"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/offerwalls_list_secound"
-            app:layout_constraintWidth_percent="0.1"
             app:layout_constraintHeight_percent="0.4"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.422"
 
-            />
+            app:layout_constraintWidth_percent="0.1" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

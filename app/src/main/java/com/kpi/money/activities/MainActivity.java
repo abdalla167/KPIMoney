@@ -633,7 +633,7 @@ public class MainActivity extends ActivityBase {
         setSupportActionBar(toolbar);
         int Numboftabs = 1;
 
-        if(android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
             toolbar.setElevation(4);
         }
 
@@ -649,7 +649,7 @@ public class MainActivity extends ActivityBase {
             adapter =  new ViewPagerAdapter(getSupportFragmentManager(),Titles2,Numboftabs);
             tabs.setVisibility(View.VISIBLE);
 
-            if(android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
+            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
                 tabs.setElevation(4);
             }
 
@@ -672,11 +672,11 @@ public class MainActivity extends ActivityBase {
 
         mActionBarDrawerToggle = new ActionBarDrawerToggle(context,mDrawerLayout,toolbar,R.string.navigation_drawer_opened,R.string.navigation_drawer_closed)
         {   @Override
-            public void onDrawerSlide(View drawerView, float slideOffset)
-            {
-                // Disables the burger/arrow animation by default
-                super.onDrawerSlide(drawerView, 0);
-            }
+        public void onDrawerSlide(View drawerView, float slideOffset)
+        {
+            // Disables the burger/arrow animation by default
+            super.onDrawerSlide(drawerView, 0);
+        }
         };
 
         mDrawerLayout.addDrawerListener(mActionBarDrawerToggle);

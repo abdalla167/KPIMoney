@@ -54,7 +54,7 @@ public class AboutActivity extends AppCompatActivity {
 			case android.R.id.home:
 				this.finish();
 				break;
-				
+
 			case R.id.share:
 				shareApp();
 				return true;

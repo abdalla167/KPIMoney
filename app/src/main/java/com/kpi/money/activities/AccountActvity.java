@@ -25,6 +25,7 @@ import com.kpi.money.utils.AppUtils;
 import com.kpi.money.utils.CustomRequest;
 import com.kpi.money.utils.Dialogs;
 import com.kpi.money.utils.RetrofitClint;
+import com.kpi.money.viewmodels.AppViewModelKotlin;
 
 import org.json.JSONObject;
 
@@ -125,71 +126,73 @@ public class AccountActvity extends ActivityBase {
         {
 
 
+            AppViewModelKotlin appViewModelKotlin=new AppViewModelKotlin();
+            appViewModelKotlin.getPoinWatchingAdd();
 
 
-            UploadpointParmater uploadpointParmater = new UploadpointParmater();
-            uploadpointParmater.setUser_id(App.getInstance().getId() + "");
-            uploadpointParmater.setPoint_id("1");
-
-            String ss=App.getInstance().getAccessToken();
-
-
-            RetrofitClint.getInstance().gettime("Bearer "+App.getInstance().getAccessToken(),App.getInstance().getId() + "","1")
-                    .enqueue(new Callback<GetTimes>() {
-                        @Override
-                        public void onResponse(Call<GetTimes> call, retrofit2.Response<GetTimes> response) {
-                            if (response.isSuccessful())
-                            {
-                                times_adom=response.body().getTimes();
-
-                                UploadpointParmater uploadpointParmater2 = new UploadpointParmater();
-                                uploadpointParmater2.setUser_id(App.getInstance().getId() + "");
-                                uploadpointParmater2.setPoint_id("2");
-                                RetrofitClint.getInstance()
-                                        .gettime("Bearer "+App.getInstance().getAccessToken(),App.getInstance().getId() + "","2")
-                                        .enqueue(new Callback<GetTimes>() {
-                                            @Override
-                                            public void onResponse(Call<GetTimes> call, retrofit2.Response<GetTimes> response2) {
-                                                if(response2.isSuccessful())
-                                                {
-                                                    times_fac=response2.body().getTimes();
-                                                    Log.d(TAG, "onResponse: "+times_adom+" "+times_fac);
-                                                }
-                                            }
-
-                                            @Override
-                                            public void onFailure(Call<GetTimes> call, Throwable t) {
-                                                Log.d(TAG, "onFailure: "+t.getMessage());
-                                            }
-                                        });
-                            }
-                        }
-
-                        @Override
-                        public void onFailure(Call<GetTimes> call, Throwable t) {
-                            Log.d(TAG, "onFailure: "+t.getMessage());
-                        }
-                    });
-
-            String s= String.valueOf(App.getInstance().getId());
-
-            RetrofitClint.getInstance().getpointAdCall("Bearer "+App.getInstance().getAccessToken()).enqueue(new Callback<GetpointAd>() {
-                @Override
-                public void onResponse(Call<GetpointAd> call, retrofit2.Response<GetpointAd> response) {
-                    if (response.isSuccessful())
-                    {
-                        point_Admob= Integer.parseInt(response.body().getData().get(1).getPoints());
-                        point_adfac= Integer.parseInt(response.body().getData().get(0).getPoints());
-                        Log.d(TAG, "onResponse: "+point_Admob+"  "+point_adfac);
-
-                    }
-                }
-
-                @Override
-                public void onFailure(Call<GetpointAd> call, Throwable t) {
-
-                }
-            });
+//            UploadpointParmater uploadpointParmater = new UploadpointParmater();
+//            uploadpointParmater.setUser_id(App.getInstance().getId() + "");
+//            uploadpointParmater.setPoint_id("1");
+//
+//            String ss=App.getInstance().getAccessToken();
+//
+//
+//            RetrofitClint.getInstance().gettime("Bearer "+App.getInstance().getAccessToken(),App.getInstance().getId() + "","1")
+//                    .enqueue(new Callback<GetTimes>() {
+//                        @Override
+//                        public void onResponse(Call<GetTimes> call, retrofit2.Response<GetTimes> response) {
+//                            if (response.isSuccessful())
+//                            {
+//                                times_adom=response.body().getTimes();
+//
+//                                UploadpointParmater uploadpointParmater2 = new UploadpointParmater();
+//                                uploadpointParmater2.setUser_id(App.getInstance().getId() + "");
+//                                uploadpointParmater2.setPoint_id("2");
+//                                RetrofitClint.getInstance()
+//                                        .gettime("Bearer "+App.getInstance().getAccessToken(),App.getInstance().getId() + "","2")
+//                                        .enqueue(new Callback<GetTimes>() {
+//                                            @Override
+//                                            public void onResponse(Call<GetTimes> call, retrofit2.Response<GetTimes> response2) {
+//                                                if(response2.isSuccessful())
+//                                                {
+//                                                    times_fac=response2.body().getTimes();
+//                                                    Log.d(TAG, "onResponse: "+times_adom+" "+times_fac);
+//                                                }
+//                                            }
+//
+//                                            @Override
+//                                            public void onFailure(Call<GetTimes> call, Throwable t) {
+//                                                Log.d(TAG, "onFailure: "+t.getMessage());
+//                                            }
+//                                        });
+//                            }
+//                        }
+//
+//                        @Override
+//                        public void onFailure(Call<GetTimes> call, Throwable t) {
+//                            Log.d(TAG, "onFailure: "+t.getMessage());
+//                        }
+//                    });
+//
+//            String s= String.valueOf(App.getInstance().getId());
+//
+//            RetrofitClint.getInstance().getpointAdCall("Bearer "+App.getInstance().getAccessToken()).enqueue(new Callback<GetpointAd>() {
+//                @Override
+//                public void onResponse(Call<GetpointAd> call, retrofit2.Response<GetpointAd> response) {
+//                    if (response.isSuccessful())
+//                    {
+//                        point_Admob= Integer.parseInt(response.body().getData().get(1).getPoints());
+//                        point_adfac= Integer.parseInt(response.body().getData().get(0).getPoints());
+//                        Log.d(TAG, "onResponse: "+point_Admob+"  "+point_adfac);
+//
+//                    }
+//                }
+//
+//                @Override
+//                public void onFailure(Call<GetpointAd> call, Throwable t) {
+//
+//                }
+//            });
 
             showProcessLayout();
 

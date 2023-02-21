@@ -2,7 +2,6 @@ package com.kpi.money.adapters;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,12 +13,14 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.kpi.money.R;
-import com.kpi.money.activities.OfferDetailsActivity;
 import com.kpi.money.app.App;
+import com.kpi.money.fragments.SheetFragmentApiOffersDetalisjava;
+import com.kpi.money.model.ModelBetweenApiSheet;
 import com.kpi.money.model.Offers;
 import com.kpi.money.services.CheckVpn;
 
@@ -65,7 +66,7 @@ public class OffersAdapter extends RecyclerView.Adapter<OffersAdapter.MyViewHold
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_offer_api_new, parent, false);
+                .inflate(R.layout.item_offers_list, parent, false);
 
 
         return new MyViewHolder(itemView);
@@ -121,12 +122,13 @@ public class OffersAdapter extends RecyclerView.Adapter<OffersAdapter.MyViewHold
                     });
                     dialog.show();
                 }
+
                 else {
-                    String title = offers.getTitle();
+                    String title     = offers.getTitle();
                     String sub_title = offers.getSubtitle();
-                    String amount = offers.getAmount();
-                    String url = offers.getUrl();
-                    String image = offers.getImage();
+                    String amount    = offers.getAmount();
+                    String url       = offers.getUrl();
+                    String image     = offers.getImage();
                     String OriginalAmount = offers.getOriginalAmount();
                     String partner = offers.getPartner();
                     String uniq_id = offers.getUniq_id();
@@ -139,26 +141,23 @@ public class OffersAdapter extends RecyclerView.Adapter<OffersAdapter.MyViewHold
                     String instruction_four = offers.getInst4();
                     Boolean webview = offers.getInappViewable();
 
-                    Intent details = new Intent(context, OfferDetailsActivity.class);
-                    details.putExtra("uniq_id", uniq_id);
-                    details.putExtra("offerid", offerid);
-                    details.putExtra("app_name", title);
-                    details.putExtra("description", sub_title);
-                    details.putExtra("icon_url", image);
-                    details.putExtra("bg_image_url", bg_image);
-                    details.putExtra("amount", amount);
-                    details.putExtra("OriginalAmount", OriginalAmount);
-                    details.putExtra("link", url);
-                    details.putExtra("partner", partner);
-                    details.putExtra("instructionsTitle", instructions_title);
-                    details.putExtra("first_text", instruction_one);
-                    details.putExtra("second_text", instruction_two);
-                    details.putExtra("third_text", instruction_three);
-                    details.putExtra("fourth_text", instruction_four);
-                    details.putExtra("webview", webview);
-                    context.startActivity(details);
+
+                    ModelBetweenApiSheet modelBetweenApiSheet=new ModelBetweenApiSheet
+                            (uniq_id,offerid,title,sub_title,image,bg_image,amount,OriginalAmount,url,partner,instructions_title,instruction_one,instruction_two,instruction_three
+                                    ,instruction_four,webview);
+                    AppCompatActivity activity = (AppCompatActivity) view.getContext();
+
+                    /*
+                    SheetFragmentApiOffersDetalisjava sheetFragmentApiOffersDetalis=new SheetFragmentApiOffersDetalisjava(modelBetweenApiSheet,context);
+                    sheetFragmentApiOffersDetalis.show(activity.getSupportFragmentManager(),"abdalla");
+
+                     */
                 }
-           }
+
+
+
+
+            }
         });
 
     }

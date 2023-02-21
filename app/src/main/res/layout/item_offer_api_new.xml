@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/space200"
+    android:layout_height="@dimen/space100"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:id="@+id/single_item"
@@ -55,7 +55,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:scaleType="fitXY"
-                   />
+                    />
             </androidx.cardview.widget.CardView>
 
 
@@ -116,7 +116,6 @@
                 android:layout_gravity="center"
                 android:background="@drawable/rounded_bg"
                 android:gravity="center"
-
                 android:text="+ 50"
                 android:textColor="@color/white"
                 android:textSize="15sp"
@@ -142,13 +141,13 @@
         android:orientation="vertical"
         android:visibility="visible"
         android:background="@color/view_line"/>
-<LinearLayout
-    android:id="@+id/addlayout"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:visibility="gone"
-    android:background="@color/white"/>
+    <LinearLayout
+        android:id="@+id/addlayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone"
+        android:background="@color/white"/>
 
 
 </LinearLayout>

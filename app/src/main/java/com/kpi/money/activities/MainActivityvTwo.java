@@ -349,16 +349,6 @@ public class MainActivityvTwo extends ActivityBase {
 
 
 
-
-
-    /////////////////////////////////////////////////////////
-    // Main fuctions
-    void openInstructions(){
-        Intent transactions = new Intent(context, FragmentsActivity.class);
-        transactions.putExtra("show","instructions");
-        startActivity(transactions);
-    }
-
     void openRefer(){
         Intent transactions = new Intent(context, FragmentsActivity.class);
         transactions.putExtra("show","refer");
@@ -375,6 +365,13 @@ public class MainActivityvTwo extends ActivityBase {
         startActivityForResult(spin,1);
     }
 
+    void openInstructions(){
+        Intent transactions = new Intent(context, FragmentsActivity.class);
+        transactions.putExtra("show","instructions");
+        startActivity(transactions);
+    }
+
+
     void openTransactions(){
 
         Intent transactions = new Intent(context, FragmentsActivity.class);
@@ -389,10 +386,21 @@ public class MainActivityvTwo extends ActivityBase {
     }
 
 
+    /////////////////////////////////////////////////////////
+    // Main fuctions
+
+
+
+
 
     // AdNetworks
 
 
+    void parseURL(String url){
+        Uri uri = Uri.parse(url);
+        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+        startActivity(intent);
+    }
 
     void openAdMantumOfferWall(){
 
@@ -448,11 +456,7 @@ public class MainActivityvTwo extends ActivityBase {
         }
 
     }
-    void parseURL(String url){
-        Uri uri = Uri.parse(url);
-        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-        startActivity(intent);
-    }
+
     public void openCpaLeadOfferWall(){
 
         String OfferWall_Url = App.getInstance().get("CpaLead_DirectLink","")+"&subid="+App.getInstance().getUsername()+"&subid2="+App.getInstance().getUsername();

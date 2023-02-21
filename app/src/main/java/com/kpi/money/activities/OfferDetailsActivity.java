@@ -56,15 +56,15 @@ public class OfferDetailsActivity extends ActivityBase  {
 	String offerStatus, Finallink, uniq_id, offerid, app_name, description, icon_url, bg_image_url,  amount, OriginalAmount,  link,  partner, insTitle, first_text,  second_text,  third_text,  fourth_text;
 	Boolean webview, offerstatusPending;
 
-    String ClickId;
+	String ClickId;
 	OfferDetailsActivity ctx;
-    TextView later;
+	TextView later;
 	ImageView status_image;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_offer_details);
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_offer_details);
 		ctx = this;
 
 		getSupportActionBar().setTitle(R.string.offer_details);
@@ -72,11 +72,11 @@ public class OfferDetailsActivity extends ActivityBase  {
 		getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(android.R.color.transparent)));
 		getSupportActionBar().setElevation(0);
 
-        if (Build.VERSION.SDK_INT >= 21) { getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN); }
+		if (Build.VERSION.SDK_INT >= 21) { getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN); }
 		init_admob();
-        changeStatusBarColor();
-        initViews();
-        checkStorage();
+		changeStatusBarColor();
+		initViews();
+		checkStorage();
 		modifyOfferLink();
 
 	}
@@ -174,9 +174,9 @@ public class OfferDetailsActivity extends ActivityBase  {
 
 							}else if(Response.getInt("error_code") == 699 || Response.getInt("error_code") == 999){
 
-                                Dialogs.validationError(ctx,Response.getInt("error_code"));
+								Dialogs.validationError(ctx,Response.getInt("error_code"));
 
-                            }else if(DEBUG_MODE){
+							}else if(DEBUG_MODE){
 
 								// For Testing ONLY - intended for Developer Use ONLY not visible for Normal App user
 								Dialogs.errorDialog(ctx,Response.getString("error_code"),Response.getString("error_description"),false,false,"",getResources().getString(R.string.ok),null);
@@ -261,13 +261,13 @@ public class OfferDetailsActivity extends ActivityBase  {
 		return (new Random()).nextInt((888888 - 111112) + 1) + 111111;
 	}
 
-    private void changeStatusBarColor() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            Window window = getWindow();
-            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            window.setStatusBarColor(Color.TRANSPARENT);
-        }
-    }
+	private void changeStatusBarColor() {
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+			Window window = getWindow();
+			window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+			window.setStatusBarColor(Color.TRANSPARENT);
+		}
+	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
@@ -367,7 +367,7 @@ public class OfferDetailsActivity extends ActivityBase  {
 
 		try{
 
-            Jsonroot.put("user", App.getInstance().getUsername());
+			Jsonroot.put("user", App.getInstance().getUsername());
 			Jsonroot.put("cid", ClickId);
 			Jsonroot.put("of_id", offerid);
 			Jsonroot.put("of_title", app_name);
@@ -376,11 +376,11 @@ public class OfferDetailsActivity extends ActivityBase  {
 			Jsonroot.put("partner", partner);
 			Jsonroot.put("dev_name", deviceName);
 			Jsonroot.put("dev_man", deviceMan);
-            Jsonroot.put("ver", BuildConfig.VERSION_NAME);
+			Jsonroot.put("ver", BuildConfig.VERSION_NAME);
 			Jsonroot.put("pckg", getPackageName());
-            Jsonroot.put("clientId", CLIENT_ID);
-            Jsonroot.put("accountId", Long.toString(App.getInstance().getId()));
-            Jsonroot.put("accessToken", App.getInstance().getAccessToken());
+			Jsonroot.put("clientId", CLIENT_ID);
+			Jsonroot.put("accountId", Long.toString(App.getInstance().getId()));
+			Jsonroot.put("accessToken", App.getInstance().getAccessToken());
 
 		}catch (JSONException e){
 			// e.printStackTrace();
@@ -442,7 +442,7 @@ public class OfferDetailsActivity extends ActivityBase  {
 		title.setText(app_name);
 		desc.setText(getString(R.string.earn) + " " + amount + " " + getString(R.string.app_currency) + " " + getString(R.string.on_this_offer));
 		Glide.with(this).load(icon_url).into(offer_icon);
-		if(android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){ comSpace.setElevation(20); }
+		if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){ comSpace.setElevation(20); }
 
 		instructionsTitle.setText(insTitle);
 		first.setText(first_text);
@@ -451,11 +451,11 @@ public class OfferDetailsActivity extends ActivityBase  {
 		fourth.setText(fourth_text);
 		complete_button.setText(getResources().getString(R.string.complete_offer));
 
-        if(!bg_image_url.isEmpty()){
-            Glide.with(this).load(bg_image_url).into(bg_image);
-        }else{
-            Glide.with(this).load(SERVER_URL+"assets/images/offer_banner.png").into(bg_image);
-        }
+		if(!bg_image_url.isEmpty()){
+			Glide.with(this).load(bg_image_url).into(bg_image);
+		}else{
+			Glide.with(this).load(SERVER_URL+"assets/images/offer_banner.png").into(bg_image);
+		}
 
 		// On click Listners
 		later.setOnClickListener(new View.OnClickListener() {

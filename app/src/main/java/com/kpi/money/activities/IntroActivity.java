@@ -4,10 +4,15 @@ package com.kpi.money.activities;
  *  Created by DroidOXY
  */
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.content.Intent;
+import android.provider.Settings;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -23,11 +28,12 @@ import com.kpi.money.app.App;
 import com.github.paolorotolo.appintro.AppIntro;
 import com.github.paolorotolo.appintro.AppIntroFragment;
 
+import java.util.Locale;
+
 public class IntroActivity extends AppIntro {
 
     @Override
     public void init(Bundle savedInstanceState) {
-
 
         if (!App.getInstance().get("isFirstTimeLaunch",true)) {
             // Write a message to the database
@@ -73,7 +79,59 @@ public class IntroActivity extends AppIntro {
     public void onSlideChanged() {
 
     }
+    private void checkAlertPermission(){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (!Settings.System.canWrite(getApplicationContext())) {
+                Intent intent = new Intent(Settings.ACTION_MANAGE_WRITE_SETTINGS, Uri.parse("package:" + getPackageName()));
+                startActivityForResult(intent, 200);
 
+            }
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+
+
+
+
+
+            if (!Settings.canDrawOverlays(this)) {
+
+                Intent intent2 = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:" + this.getPackageName()));
+                startActivityForResult(intent2, 100);
+
+                if ("xiaomi".equals(Build.MANUFACTURER.toLowerCase(Locale.ROOT))) {
+                    final Intent intent = new Intent("miui.intent.action.APP_PERM_EDITOR");
+                    intent.setClassName("com.miui.securitycenter",
+                            "com.miui.permcenter.permissions.PermissionsEditorActivity");
+                    intent.putExtra("extra_pkgname", getPackageName());
+                    new AlertDialog.Builder(this)
+                            .setTitle("Please Enable the additional permissions")
+                            .setMessage("You will not receive all featueres while the app is in background if you disable these permissions")
+                            .setPositiveButton("Go to Settings", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    startActivity(intent);
+                                }
+                            })
+                            .setIcon(android.R.drawable.ic_dialog_info)
+                            .setCancelable(false)
+                            .show();
+                }
+                else {
+                    Intent overlaySettings = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:" + getPackageName()));
+                    startActivityForResult(overlaySettings, 100);
+                }
+            }
+
+
+        }
+
+
+
+//        if (!FilePermissionUtility.alertPermissionIsAllowed(this))
+//            FilePermissionUtility.checkAlertPermission(this,mGetContent);
+//
+
+
+    }
 
 }
 

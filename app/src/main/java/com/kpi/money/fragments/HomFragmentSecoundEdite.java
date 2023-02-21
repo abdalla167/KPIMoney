@@ -5,10 +5,14 @@ import static com.kpi.money.constants.Constants.ACCOUNT_CHECKIN;
 import static com.kpi.money.constants.Constants.API_ADMANTUM;
 import static com.kpi.money.constants.Constants.APP_OFFERWALLS;
 import static com.kpi.money.constants.Constants.AdMantumActive;
+import static com.kpi.money.constants.Constants.AdMantumAppId;
 import static com.kpi.money.constants.Constants.DEBUG_MODE;
 import static com.kpi.money.constants.Constants.ERROR_SUCCESS;
+import static com.kpi.money.constants.Constants.KiwiWallWallId;
+import static com.kpi.money.constants.Constants.OfferDaddy_AppId;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
@@ -22,6 +26,9 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -29,6 +36,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -38,24 +46,40 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.bumptech.glide.Glide;
+import com.google.android.gms.ads.AdError;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.FullScreenContentCallback;
 import com.google.android.gms.ads.LoadAdError;
 import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.OnUserEarnedRewardListener;
 import com.google.android.gms.ads.initialization.InitializationStatus;
 import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
+import com.google.android.gms.ads.interstitial.InterstitialAd;
+import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
+import com.google.android.gms.ads.rewarded.RewardItem;
+import com.google.android.gms.ads.rewarded.RewardedAd;
+import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback;
 import com.kpi.money.R;
+import com.kpi.money.activities.AccountActvity;
+import com.kpi.money.activities.FragmentsActivity;
+import com.kpi.money.activities.WallActivity;
+import com.kpi.money.activities.WebsiteActivity;
 import com.kpi.money.adapters.OfferWallsAdapter;
 import com.kpi.money.adapters.OffersAdapter;
 import com.kpi.money.app.App;
+import com.kpi.money.constants.Constants;
 import com.kpi.money.model.OfferWalls;
 import com.kpi.money.model.Offers;
+import com.kpi.money.model.point_ads.UploadPointAd;
+import com.kpi.money.model.point_ads.UploadpointParmater;
 import com.kpi.money.services.CheckVpn;
 import com.kpi.money.utils.AppUtils;
 import com.kpi.money.utils.CustomRequest;
 import com.kpi.money.utils.Dialogs;
+import com.kpi.money.utils.RetrofitClint;
 import com.kpi.money.viewmodels.AppViewModelKotlin;
 import com.wang.avi.AVLoadingIndicatorView;
 import com.yashdev.countdowntimer.CountDownTimerView;
@@ -68,23 +92,30 @@ import java.util.Timer;
 import java.util.TimerTask;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import dmax.dialog.SpotsDialog;
+import retrofit2.Call;
+import retrofit2.Callback;
 
 public class HomFragmentSecoundEdite  extends Fragment {
     private ProgressDialog pDialog;
-
+    InterstitialAd interstitial;
     private RecyclerView offerwalls_list;
     private OfferWallsAdapter offerWallsAdapter;
     private ArrayList<OfferWalls> offerWalls;
-    TextView pointText, pointnumber, nameclint,amountpointAd_admob;
-
+    TextView  pointnumber;
     AdView adView;
+    WebView webView;
     private OffersAdapter offersAdapter;
 
     private AVLoadingIndicatorView progressBarOfferwalls;
     AVLoadingIndicatorView avLoadingIndicatorView;
     ImageView coin,heart,box,refershbalance;
     SharedPreferences sp;
+    CardView viewAddes,watchingvedio,cardadwebsite;
+    RecyclerView offers_list;
+    AppViewModelKotlin appViewModelKotlin;
+    RewardedAd mRewardedAd;
 
+    ProgressDialog progressBar;
 
     public HomFragmentSecoundEdite() {
 
@@ -113,21 +144,34 @@ public class HomFragmentSecoundEdite  extends Fragment {
         coin=view.findViewById(R.id.imageView13_scound);
         heart=view.findViewById(R.id.circleImageView2_scound);
         box=view.findViewById(R.id.box_dalychecin);
-        RecyclerView offers_list = view.findViewById(R.id.recycler_api_fragmentscound);
+        offers_list   = view.findViewById(R.id.recycler_api_fragmentscound);
         avLoadingIndicatorView=view.findViewById(R.id.aviscound);
         progressBarOfferwalls = view.findViewById(R.id.progressBarOfferwalls_secound);
         offerwalls_list = view.findViewById(R.id.offerwalls_list_secound);
         refershbalance=view.findViewById(R.id.refreshbalance);
         pointnumber=view.findViewById(R.id.pointsnumber_secound);
         adView=view.findViewById(R.id.adView_secound);
+        viewAddes=view.findViewById(R.id.cardviewAdds);
         adView = new AdView(getActivity());
+        watchingvedio=view.findViewById(R.id.watchingvedio);
+        cardadwebsite=view.findViewById(R.id.cardadwebsite);
+
+        webView=view.findViewById(R.id.webView1);
+        webView.setWebViewClient(new WebViewClient());
+
+        WebSettings websetting = webView.getSettings();
+
+        websetting.setJavaScriptEnabled(true);
+
+
+
 
         sp = getContext().getSharedPreferences("PREFS_GAME", Context.MODE_PRIVATE);
 
         MobileAds.initialize(getContext(), new OnInitializationCompleteListener() {
             @Override
             public void onInitializationComplete(InitializationStatus initializationStatus) {
-
+                AddesBanner( adView);
             }
         });
 
@@ -138,54 +182,8 @@ public class HomFragmentSecoundEdite  extends Fragment {
         Glide.with(view).load(R.drawable.refresh).into(refershbalance);
 
 
-        AddesBanner( adView);
+        //  AddesBanner( adView);
 
-        AppViewModelKotlin appViewModelKotlin=new AppViewModelKotlin();
-
-
-        appViewModelKotlin.getPoint().observe(getViewLifecycleOwner(), new Observer<String>() {
-            @Override
-            public void onChanged(String s) {
-                pointnumber.setText(s+"");
-            }
-        });
-
-        appViewModelKotlin.getAllOfferAll().observe(getViewLifecycleOwner(), new Observer<ArrayList<OfferWalls>>() {
-            @Override
-            public void onChanged(ArrayList<OfferWalls> offerWalls) {
-                offerWallsAdapter = new OfferWallsAdapter(getActivity(), offerWalls);
-                RecyclerView.LayoutManager offerWallsLayoutManager = new LinearLayoutManager(getActivity(),LinearLayoutManager.HORIZONTAL,false);
-                // RecyclerView.LayoutManager offerWallsLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
-                offerwalls_list.setLayoutManager(offerWallsLayoutManager);
-                offerwalls_list.setItemAnimator(new DefaultItemAnimator());
-                offerwalls_list.setAdapter(offerWallsAdapter);
-                progressBarOfferwalls.setVisibility(View.GONE);
-            }
-        });
-
-        if(App.getInstance().get("API_OFFERS_ACTIVE",true)){
-
-            if(App.getInstance().get(AdMantumActive,true)){
-                appViewModelKotlin.getAllOfferApi().observe(getViewLifecycleOwner(), new Observer<ArrayList<Offers>>() {
-                    @Override
-                    public void onChanged(ArrayList<Offers> offers) {
-                        offersAdapter = new OffersAdapter(getActivity(),offers);
-                        RecyclerView.LayoutManager offersLayoutmanager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
-                        offers_list.setLayoutManager(offersLayoutmanager);
-                        offers_list.setItemAnimator(new DefaultItemAnimator());
-                        offers_list.setAdapter(offersAdapter);
-                        avLoadingIndicatorView.setVisibility(View.GONE);
-                    }
-                });
-
-            }
-
-        }
-        if (!App.getInstance().get("API_OFFERS_ACTIVE", true)) {
-
-            progressBarOfferwalls.setVisibility(View.GONE);
-
-        }
 
         refershbalance.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -224,15 +222,66 @@ public class HomFragmentSecoundEdite  extends Fragment {
                 }}
 
         });
+        viewAddes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
 
 
+                showRewardedAd();
 
 
-
-
+            }
+        });
+        watchingvedio.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(CheckVpn.checkVpn(getContext()))
+                {
+                    final Dialog dialog = new Dialog(getContext());
+                    dialog.setContentView(R.layout.custom_dalig_vpn);
+                    Button dialogButton = (Button) dialog.findViewById(R.id.okVpn_check);
+                    dialogButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            dialog.dismiss();
+                        }
+                    });
+                    dialog.show();
+                }
+                else {
+                    Intent webvids = new Intent(getContext(), FragmentsActivity.class);
+                    webvids.putExtra("show","webvids");
+                    startActivityForResult(webvids,1);
+                }
+            }
+        });
+        cardadwebsite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(CheckVpn.checkVpn(getContext()))
+                {
+                    final Dialog dialog = new Dialog(getContext());
+                    dialog.setContentView(R.layout.custom_dalig_vpn);
+                    Button dialogButton = (Button) dialog.findViewById(R.id.okVpn_check);
+                    dialogButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            dialog.dismiss();
+                        }
+                    });
+                    dialog.show();
+                }
+                else {
+                    Intent transactions = new Intent(getContext(), WebsiteActivity.class);
+                    startActivity(transactions);
+                }
+            }
+        });
+        //   init_admob();
 
         return view;
     }
+
 /*
     private void load_offerwalls() {
 
@@ -413,12 +462,63 @@ public class HomFragmentSecoundEdite  extends Fragment {
         }
 
 */
+
     @Override
     public void onResume() {
         super.onResume();
 
-       // offersAdapter.notifyDataSetChanged();
+        // offersAdapter.notifyDataSetChanged();
     }
+
+    public void getdata()
+    {
+        appViewModelKotlin.getPoint().observe(getViewLifecycleOwner(), new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                pointnumber.setText(s+"");
+            }
+        });
+
+        appViewModelKotlin.getAllOfferAll().observe(getViewLifecycleOwner(), new Observer<ArrayList<OfferWalls>>() {
+            @Override
+            public void onChanged(ArrayList<OfferWalls> offerWalls) {
+
+                HomFragmentSecoundEdite homFragmentSecoundEdite=new HomFragmentSecoundEdite();
+                offerWallsAdapter = new OfferWallsAdapter(getActivity(), offerWalls,homFragmentSecoundEdite);
+                RecyclerView.LayoutManager offerWallsLayoutManager = new LinearLayoutManager(getActivity(),LinearLayoutManager.HORIZONTAL,false);
+                offerwalls_list.setLayoutManager(offerWallsLayoutManager);
+                offerwalls_list.setItemAnimator(new DefaultItemAnimator());
+                offerwalls_list.setAdapter(offerWallsAdapter);
+                progressBarOfferwalls.setVisibility(View.GONE);
+            }
+        });
+//
+//        if(App.getInstance().get("API_OFFERS_ACTIVE",true)){
+//
+//            if(App.getInstance().get(AdMantumActive,true)){
+//                appViewModelKotlin.getAllOfferApi().observe(getViewLifecycleOwner(), new Observer<ArrayList<Offers>>() {
+//                    @Override
+//                    public void onChanged(ArrayList<Offers> offers) {
+//                        offersAdapter = new OffersAdapter(getActivity(),offers);
+//                        RecyclerView.LayoutManager offersLayoutmanager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+//                        offers_list.setLayoutManager(offersLayoutmanager);
+//                        offers_list.setItemAnimator(new DefaultItemAnimator());
+//                        offers_list.setAdapter(offersAdapter);
+//                        avLoadingIndicatorView.setVisibility(View.GONE);
+//                    }
+//                });
+//
+//            }
+//
+//        }
+//        if (!App.getInstance().get("API_OFFERS_ACTIVE", true)) {
+//
+//            progressBarOfferwalls.setVisibility(View.GONE);
+//
+//        }
+
+    }
+
 
     void updateBalance() {
         final AlertDialog updating = new SpotsDialog(getContext(), R.style.Custom);
@@ -435,13 +535,12 @@ public class HomFragmentSecoundEdite  extends Fragment {
     public void AddesBanner(AdView adView)
     {
 
-
-
-
         adView.setAdSize(AdSize.BANNER);
         adView.setAdUnitId(sp.getString("banner_ad_unit_id", "ca-app-pub-3940256099942544/6300978111"));
+        //adView.setAdUnitId( "ca-app-pub-3940256099942544/6300978111");
         AdRequest adRequest = new AdRequest.Builder().build();
         adView.loadAd(adRequest);
+
         adView.setAdListener(new AdListener() {
             @Override
             public void onAdLoaded() {
@@ -481,6 +580,18 @@ public class HomFragmentSecoundEdite  extends Fragment {
     }
 
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        appViewModelKotlin =new AppViewModelKotlin();
+
+        loadRewardedAd();
+
+        getdata();
+
+        init_admob();
+
+    }
 
     protected void initpDialog() {
 
@@ -607,4 +718,623 @@ public class HomFragmentSecoundEdite  extends Fragment {
         Dialogs.customDialog(getContext(), timerView,getResources().getString(R.string.daily_reward_taken),false,false,"",getResources().getString(R.string.ok),null);
 
     }
+
+
+
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+    }
+    private void loadRewardedAd() {
+
+        AdRequest adRequest = new AdRequest.Builder().build();
+        // RewardedAd.load(getContext(), sp.getString("reward_id", "ca-app-pub-8830750863521432/6996772124"),
+        RewardedAd.load(getContext(),"ca-app-pub-3940256099942544/5224354917",
+                adRequest, new RewardedAdLoadCallback() {
+                    @Override
+                    public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+                        // Handle the error.
+                        Log.d("TAG", loadAdError.getMessage());
+                        Log.d("TAG", "onAdFailedToLoad");
+                    }
+
+                    @Override
+                    public void onAdLoaded(@NonNull RewardedAd rewardedAd) {
+                        mRewardedAd = rewardedAd;
+                        Log.d("TAG", "Ad is Loaded");
+
+                        mRewardedAd.setFullScreenContentCallback(new FullScreenContentCallback() {
+                            @Override
+                            public void onAdShowedFullScreenContent() {
+                                // Called when ad is shown.
+                                Log.d("TAG", "Ad was shown.");
+                            }
+
+                            @Override
+                            public void onAdFailedToShowFullScreenContent(AdError adError) {
+                                // Called when ad fails to show.
+                                Log.d("TAG", "Ad failed to show.");
+                                loadRewardedAd();
+                                // showRewardedAd();
+                            }
+
+                            @Override
+                            public void onAdDismissedFullScreenContent() {
+                                // Called when ad is dismissed.
+                                // Don't forget to set the ad reference to null so you
+                                // don't show the ad a second time.
+                                Log.d("TAG", "Ad was dismissed.");
+                                loadRewardedAd();
+
+                            }
+                        });
+                    }
+                });
+    }
+    private void showRewardedAd() {
+        if (mRewardedAd != null) {
+
+            mRewardedAd.show(getActivity(), new OnUserEarnedRewardListener() {
+                @Override
+                public void onUserEarnedReward(@NonNull RewardItem rewardItem) {
+                    // Handle the reward.
+                    Log.d("TAG", "The user earned the reward."+AccountActvity.times_adom +"");
+                    int rewardAmount = rewardItem.getAmount();
+                    String rewardType = rewardItem.getType();
+                    //add data to server
+                    //setRewardedAdServer();
+
+
+                    if(AccountActvity.times_adom >=0)
+                    {
+
+                        UploadpointParmater uploadpointParmater = new UploadpointParmater();
+                        uploadpointParmater.setUser_id(App.getInstance().getId() + "");
+                        uploadpointParmater.setPoint_id("1");
+                        String t=App.getInstance().getAccessToken();
+                        Log.d("TAG", "onUserEarnedReward: "+t+"  "+App.getInstance().getId());
+                        RetrofitClint.getInstance().addpointAds("Bearer " + App.getInstance().getAccessToken(), uploadpointParmater).enqueue(new Callback<UploadPointAd>() {
+                            @Override
+                            public void onResponse(Call<UploadPointAd> call, retrofit2.Response<UploadPointAd> response) {
+                                if (response.isSuccessful()) {
+                                    if (AccountActvity.times_adom >= 0)
+                                        Toast.makeText(getContext(), "You Earn : " + response.body().getData().getEarn(), Toast.LENGTH_SHORT).show();
+
+                                    else
+                                        Toast.makeText(getContext(), "", Toast.LENGTH_SHORT).show();
+
+
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(Call<UploadPointAd> call, Throwable t) {
+
+
+                                Toast.makeText(getContext(), "Somtthing Wroing", Toast.LENGTH_SHORT).show();
+
+                            }
+                        });
+
+                    }
+                    else
+                    {
+                        Toast.makeText(getContext(), "please try Tomorrow", Toast.LENGTH_SHORT).show();
+
+                    }
+
+                }
+            });
+        }
+        else {
+            Toast.makeText(getActivity(), "The rewarded ad wasn't ready yet", Toast.LENGTH_SHORT).show();
+            Log.d("TAG", "The rewarded ad wasn't ready yet.");
+            loadRewardedAd();
+        }
+    }
+
+
+    void init_admob(){
+
+
+
+        AdRequest adRequest = new AdRequest.Builder().build();
+        MobileAds.initialize(getContext(), new OnInitializationCompleteListener() {
+            @Override
+            public void onInitializationComplete(InitializationStatus initializationStatus) {
+
+            }
+        });
+
+//getActivity(), sp.getString("interstitial_ad_unit_id","ca-app-pub-3940256099942544/1033173712")
+        InterstitialAd.load(getActivity(), "ca-app-pub-3940256099942544/1033173712", adRequest,
+                new InterstitialAdLoadCallback() {
+                    @Override
+                    public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
+                        // The mInterstitialAd reference will be null until
+                        // an ad is loaded.
+                        Log.i("Loaded", "onAdLoaded");
+                        // displayInterstitialAd();
+                        interstitialAd.show(getActivity());
+                        interstitialAd.setFullScreenContentCallback(new FullScreenContentCallback() {
+                            @Override
+                            public void onAdFailedToShowFullScreenContent(AdError adError) {
+                                // Called when fullscreen content failed to show.
+                                super.onAdFailedToShowFullScreenContent(adError);
+                                Log.d("TAG", "The ad failed to show.");
+                            }
+
+                            @Override
+                            public void onAdDismissedFullScreenContent() {
+                                // Called when fullscreen content is dismissed.
+                                super.onAdDismissedFullScreenContent();
+                                Log.d("TAG", "The ad was dismissed.");
+                            }
+
+                            @Override
+                            public void onAdShowedFullScreenContent() {
+                                // Called when fullscreen content is shown.
+                                // Make sure to set your reference to null so you don't
+                                // show it a second time.
+                                super.onAdShowedFullScreenContent();
+                                Log.d("TAG", "The ad was shown.");
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+                        // Handle the error
+                        Log.i("FailedError", loadAdError.getMessage());
+                    }
+                });
+
+    }
+
+
+
+    public void openOfferWall(String Title, String SubTitle, String Type, String URL){
+
+        switch (Type) {
+
+            case "checkin":
+
+                showpDialog();
+                dailyCheckin(Title, SubTitle);
+
+                break;
+
+
+
+
+            case "admantum":
+
+                openAdMantumOfferWall();
+
+                break;
+
+            case "cpalead":
+
+                openCpaLeadOfferWall();
+
+                break;
+
+            case "wannads":
+
+                openWannadsOfferWall();
+
+                break;
+
+            case "kiwiwall":
+
+                openKiwiWallOfferWall();
+
+                break;
+
+            case "offerdaddy":
+
+                openOfferDaddyOfferWall();
+
+                break;
+
+            case "fyber":
+
+                openFyberOfferWall();
+
+                break;
+
+            case "adscendmedia":
+
+                openAdScendMediaOfferWall();
+
+                break;
+
+            default:
+
+                openCustomOfferWall(Type,URL);
+
+                break;
+        }
+    }
+
+
+    void parseURL(String url){
+        Uri uri = Uri.parse(url);
+        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+        startActivity(intent);
+    }
+
+    void openAdMantumOfferWall(){
+        progressBar = ProgressDialog.show(getActivity(), "", getResources().getString(R.string.loading));
+
+
+
+        String OfferWall_Url = "https://admantum.com/offers/?appid="+App.getInstance().get(AdMantumAppId,"")+"&uid="+App.getInstance().getUsername();
+
+        if(App.getInstance().get(AdMantumActive,true)){
+
+            webView.setWebViewClient(new WebViewClient() {
+                public boolean shouldOverrideUrlLoading(WebView view, String url) {
+
+                    if (url != null) {
+
+                        AppUtils.parse(getContext(),url);
+
+                        return true;
+
+                    } else {
+
+                        return false;
+                    }
+                }
+
+                public void onPageFinished(WebView view, String url) {
+                    if (progressBar.isShowing()) {
+                        progressBar.dismiss();
+                    }
+                }
+
+                public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
+
+                    Dialogs.serverError(getContext(), getResources().getString(R.string.ok), new SweetAlertDialog.OnSweetClickListener() {
+                        @Override
+                        public void onClick(SweetAlertDialog sweetAlertDialog) {
+                            sweetAlertDialog.dismiss();
+                        }
+                    });
+
+                }
+            });
+            webView.loadUrl(OfferWall_Url);
+
+
+
+//            Intent wallActivity = new Intent(getContext(), WallActivity.class);
+//            wallActivity.putExtra(Constants.OFFER_WALL_URL,OfferWall_Url);
+//            startActivityForResult(wallActivity, 111);
+
+        }else{
+            Dialogs.normalDialog(getActivity(),getResources().getString(R.string.adnetwork_disabled),getResources().getString(R.string.adnetwork_disabled_mesage),true,false,"",getResources().getString(R.string.ok),null);
+
+        }
+
+    }
+
+    public void openOfferDaddyOfferWall(){
+
+        String OfferWall_Url = "https://www.offerdaddy.com/wall/"+App.getInstance().get(OfferDaddy_AppId,"")+"/"+App.getInstance().getUsername()+"/";
+
+        webView.setWebViewClient(new WebViewClient() {
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+
+                if (url != null) {
+
+                    AppUtils.parse(getContext(),url);
+
+                    return true;
+
+                } else {
+
+                    return false;
+                }
+            }
+
+            public void onPageFinished(WebView view, String url) {
+                if (progressBar.isShowing()) {
+                    progressBar.dismiss();
+                }
+            }
+
+            public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
+
+                Dialogs.serverError(getContext(), getResources().getString(R.string.ok), new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog sweetAlertDialog) {
+                        sweetAlertDialog.dismiss();
+                    }
+                });
+
+            }
+        });
+        webView.loadUrl(OfferWall_Url);
+
+//        Intent wallActivity = new Intent(getContext(), WallActivity.class);
+//        wallActivity.putExtra(Constants.OFFER_WALL_URL,OfferWall_Url);
+//        startActivityForResult(wallActivity, 111);
+
+    }
+
+    public void openKiwiWallOfferWall(){
+
+        String OfferWall_Url = "https://www.kiwiwall.com/wall/"+App.getInstance().get(KiwiWallWallId,"")+"/"+App.getInstance().getUsername();
+        webView.setWebViewClient(new WebViewClient() {
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+
+                if (url != null) {
+
+                    AppUtils.parse(getContext(),url);
+
+                    return true;
+
+                } else {
+
+                    return false;
+                }
+            }
+
+            public void onPageFinished(WebView view, String url) {
+                if (progressBar.isShowing()) {
+                    progressBar.dismiss();
+                }
+            }
+
+            public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
+
+                Dialogs.serverError(getContext(), getResources().getString(R.string.ok), new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog sweetAlertDialog) {
+                        sweetAlertDialog.dismiss();
+                    }
+                });
+
+            }
+        });
+        webView.loadUrl(OfferWall_Url);
+
+//        Intent wallActivity = new Intent(getContext(), WallActivity.class);
+//        wallActivity.putExtra(Constants.OFFER_WALL_URL,OfferWall_Url);
+//        startActivityForResult(wallActivity, 111);
+
+    }
+
+    public void openCustomOfferWall(String offerwall_type, String url) {
+
+        if(offerwall_type.toLowerCase().contains("custom_offerwall_")){
+
+            String OfferWall_Url = url.replace("{user_id}", App.getInstance().getUsername());
+
+            webView.setWebViewClient(new WebViewClient() {
+                public boolean shouldOverrideUrlLoading(WebView view, String url) {
+
+                    if (url != null) {
+
+                        AppUtils.parse(getContext(),url);
+
+                        return true;
+
+                    } else {
+
+                        return false;
+                    }
+                }
+
+                public void onPageFinished(WebView view, String url) {
+                    if (progressBar.isShowing()) {
+                        progressBar.dismiss();
+                    }
+                }
+
+                public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
+
+                    Dialogs.serverError(getContext(), getResources().getString(R.string.ok), new SweetAlertDialog.OnSweetClickListener() {
+                        @Override
+                        public void onClick(SweetAlertDialog sweetAlertDialog) {
+                            sweetAlertDialog.dismiss();
+                        }
+                    });
+
+                }
+            });
+            webView.loadUrl(OfferWall_Url);
+
+//            Intent wallActivity = new Intent(getContext(), WallActivity.class);
+//            wallActivity.putExtra(Constants.OFFER_WALL_URL, OfferWall_Url);
+//            startActivityForResult(wallActivity, 111);
+
+        }else{
+
+            parseURL(url);
+
+        }
+
+    }
+
+    public void openCpaLeadOfferWall(){
+
+        String OfferWall_Url = App.getInstance().get("CpaLead_DirectLink","")+"&subid="+App.getInstance().getUsername()+"&subid2="+App.getInstance().getUsername();
+
+        if(App.getInstance().get("CpaLeadActive",true)){
+
+            webView.setWebViewClient(new WebViewClient() {
+                public boolean shouldOverrideUrlLoading(WebView view, String url) {
+
+                    if (url != null) {
+
+                        AppUtils.parse(getContext(),url);
+
+                        return true;
+
+                    } else {
+
+                        return false;
+                    }
+                }
+
+                public void onPageFinished(WebView view, String url) {
+                    if (progressBar.isShowing()) {
+                        progressBar.dismiss();
+                    }
+                }
+
+                public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
+
+                    Dialogs.serverError(getContext(), getResources().getString(R.string.ok), new SweetAlertDialog.OnSweetClickListener() {
+                        @Override
+                        public void onClick(SweetAlertDialog sweetAlertDialog) {
+                            sweetAlertDialog.dismiss();
+                        }
+                    });
+
+                }
+            });
+            webView.loadUrl(OfferWall_Url);
+
+//            Intent wallActivity = new Intent(getContext(), WallActivity.class);
+//            wallActivity.putExtra(Constants.OFFER_WALL_URL,OfferWall_Url);
+//            startActivityForResult(wallActivity, 111);
+
+        }else{
+            Dialogs.normalDialog(getContext(),getResources().getString(R.string.adnetwork_disabled),getResources().getString(R.string.adnetwork_disabled_mesage),true,false,"",getResources().getString(R.string.ok),null);
+
+        }
+    }
+
+    public void openWannadsOfferWall(){
+
+        String OfferWall_Url = "https://wall.wannads.com/wall?apiKey="+App.getInstance().get("WannadsApiKey","")+"&userId="+App.getInstance().getUsername();
+
+        if(App.getInstance().get("WannadsActive",true)){
+
+            webView.setWebViewClient(new WebViewClient() {
+                public boolean shouldOverrideUrlLoading(WebView view, String url) {
+
+                    if (url != null) {
+
+                        AppUtils.parse(getContext(),url);
+
+                        return true;
+
+                    } else {
+
+                        return false;
+                    }
+                }
+
+                public void onPageFinished(WebView view, String url) {
+                    if (progressBar.isShowing()) {
+                        progressBar.dismiss();
+                    }
+                }
+
+                public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
+
+                    Dialogs.serverError(getContext(), getResources().getString(R.string.ok), new SweetAlertDialog.OnSweetClickListener() {
+                        @Override
+                        public void onClick(SweetAlertDialog sweetAlertDialog) {
+                            sweetAlertDialog.dismiss();
+                        }
+                    });
+
+                }
+            });
+            webView.loadUrl(OfferWall_Url);
+
+//
+//            Intent wallActivity = new Intent(getContext(), WallActivity.class);
+//            wallActivity.putExtra(Constants.OFFER_WALL_URL,OfferWall_Url);
+//            startActivityForResult(wallActivity, 111);
+
+        }else{
+            Dialogs.normalDialog(getContext(),getResources().getString(R.string.adnetwork_disabled),getResources().getString(R.string.adnetwork_disabled_mesage),true,false,"",getResources().getString(R.string.ok),null);
+
+        }
+    }
+
+
+
+    public void openAdScendMediaOfferWall(){
+
+        String OfferWall_Url = "https://asmwall.com/adwall/publisher/"+App.getInstance().get("AdScendMedia_PubId", "")+"/profile/"+App.getInstance().get("AdScendMedia_AdwallId", "")+"?subid1="+App.getInstance().getUsername();
+
+        if(App.getInstance().get("AdScendMediaActive",true)){
+
+            webView.setWebViewClient(new WebViewClient() {
+                public boolean shouldOverrideUrlLoading(WebView view, String url) {
+
+                    if (url != null) {
+
+                        AppUtils.parse(getContext(),url);
+
+                        return true;
+
+                    } else {
+
+                        return false;
+                    }
+                }
+
+                public void onPageFinished(WebView view, String url) {
+                    if (progressBar.isShowing()) {
+                        progressBar.dismiss();
+                    }
+                }
+
+                public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
+
+                    Dialogs.serverError(getContext(), getResources().getString(R.string.ok), new SweetAlertDialog.OnSweetClickListener() {
+                        @Override
+                        public void onClick(SweetAlertDialog sweetAlertDialog) {
+                            sweetAlertDialog.dismiss();
+                        }
+                    });
+
+                }
+            });
+            webView.loadUrl(OfferWall_Url);
+//            Intent wallActivity = new Intent(getContext(), WallActivity.class);
+//            wallActivity.putExtra(Constants.OFFER_WALL_URL,OfferWall_Url);
+//            startActivityForResult(wallActivity, 111);
+
+        }else{
+            Dialogs.normalDialog(getContext(),getResources().getString(R.string.adnetwork_disabled),getResources().getString(R.string.adnetwork_disabled_mesage),true,false,"",getResources().getString(R.string.ok),null);
+        }
+
+    }
+
+    public void openFyberOfferWall(){
+
+        if(App.getInstance().get("FyberActive",true)){
+
+            Dialogs.warningDialog(getContext(),"Fyber Removed !","Fyber has been Removed from v3.5 onwards. So, please disable this AdNetwork from your Admin Panel",true,false,"",getResources().getString(R.string.ok),null);
+
+        }else{
+            Dialogs.normalDialog(getContext(),getResources().getString(R.string.adnetwork_disabled),getResources().getString(R.string.adnetwork_disabled_mesage),true,false,"",getResources().getString(R.string.ok),null);
+
+        }
+    }
+
 }

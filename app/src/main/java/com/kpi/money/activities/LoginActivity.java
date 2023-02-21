@@ -152,7 +152,7 @@ public class LoginActivity extends ActivityBase implements GoogleApiClient.OnCon
 
         // Customizing Google button
 
-                btnSignIn.setOnClickListener(new View.OnClickListener() {
+        btnSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);

@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -17,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.bumptech.glide.Glide;
 import com.kpi.money.R;
 import com.kpi.money.activities.FragmentsActivity;
 import com.kpi.money.adapters.PayoutsAdapter;
@@ -44,7 +46,7 @@ public class RedeemFragment extends Fragment {
     Context ctx;
     TextView textViewname,points;
     AVLoadingIndicatorView avLoadingIndicatorView;
-
+ImageView cupimage;
     public RedeemFragment() {
         // Required empty public constructor
     }
@@ -68,16 +70,18 @@ public class RedeemFragment extends Fragment {
         points=view.findViewById(R.id.pointclint);
         avLoadingIndicatorView.show();
         payouts = view.findViewById(R.id.payouts);
-        RecyclerView.LayoutManager layoutManager =new GridLayoutManager(ctx,2);
+        RecyclerView.LayoutManager layoutManager =new GridLayoutManager(ctx,1);
         payouts.setLayoutManager(layoutManager);
         payouts.setItemAnimator(new DefaultItemAnimator());
-
+        cupimage=view.findViewById(R.id.cupimage);
+        Glide.with(getActivity()).load(R.drawable.cup).into(cupimage);
         allpayouts = new ArrayList<>();
 
         payoutsAdapter = new PayoutsAdapter(ctx,allpayouts);
         payouts.setAdapter(payoutsAdapter);
         textViewname.setText(App.getInstance().getFullname());
         points.setText(App.getInstance().getBalance());
+
 
         CustomRequest transactionsRequest = new CustomRequest(Request.Method.POST, APP_PAYOUTS,null,
                 new Response.Listener<JSONObject>() {
@@ -157,7 +161,7 @@ public class RedeemFragment extends Fragment {
             public void onErrorResponse(VolleyError error) {
 
                 if(!DEBUG_MODE){
-                    Dialogs.serverError(ctx, getResources().getString(R.string.ok), new SweetAlertDialog.OnSweetClickListener() {
+                    Dialogs.serverError(ctx,ctx.getResources().getString(R.string.ok), new SweetAlertDialog.OnSweetClickListener() {
                         @Override
                         public void onClick(SweetAlertDialog sweetAlertDialog) {
                             finish();

@@ -1,23 +1,27 @@
 package com.kpi.money.viewmodels
 
-import android.content.Context
-import android.content.SharedPreferences
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.android.volley.Request
 import com.android.volley.Response
+import com.kpi.money.activities.AccountActvity
+import com.kpi.money.activities.ActivityBase
 import com.kpi.money.app.App
 import com.kpi.money.constants.Constants
 import com.kpi.money.model.OfferWalls
 import com.kpi.money.model.Offers
 import com.kpi.money.model.point_ads.AdsSetting
-import com.kpi.money.utils.AppUtils
+import com.kpi.money.model.point_ads.GetTimes
+import com.kpi.money.model.point_ads.GetpointAd
+import com.kpi.money.model.point_ads.UploadpointParmater
 import com.kpi.money.utils.CustomRequest
-import com.kpi.money.utils.Dialogs
 import com.kpi.money.utils.RetrofitClint
-import kotlinx.coroutines.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.json.JSONException
 import org.json.JSONObject
 import retrofit2.Call
@@ -27,8 +31,8 @@ class AppViewModelKotlin() : ViewModel() {
 
 
 
-     fun getAllOfferAll(): MutableLiveData<ArrayList<OfferWalls>>
-     {
+    fun getAllOfferAll(): MutableLiveData<ArrayList<OfferWalls>>
+    {
         val offewalllist = MutableLiveData<ArrayList<OfferWalls>>()
 
         viewModelScope.launch (Dispatchers.IO){
@@ -37,41 +41,42 @@ class AppViewModelKotlin() : ViewModel() {
             val offeres = ArrayList<OfferWalls>()
 
             val offerwallsRequest = CustomRequest(Request.Method.POST, Constants.APP_OFFERWALLS, null, { response ->
-                    try {
-                        val Response = JSONObject(App.getInstance().deData(response.toString()))
-                        if (!Response.getBoolean("error")) {
-                            val offerwalls = Response.getJSONArray("offerwalls")
-                            for (i in 0 until offerwalls.length()) {
-                                val obj = offerwalls.getJSONObject(i)
-                                val singleOfferWall = OfferWalls()
-                                singleOfferWall.offerid = obj.getString("offer_id")
-                                singleOfferWall.title = obj.getString("offer_title")
-                                singleOfferWall.subtitle = obj.getString("offer_subtitle")
-                                singleOfferWall.image = obj.getString("offer_thumbnail")
-                                singleOfferWall.amount = obj.getString("offer_points")
-                                singleOfferWall.type = obj.getString("offer_type")
-                                singleOfferWall.status = obj.getString("offer_status")
-                                singleOfferWall.url = obj.getString("offer_url")
-                                singleOfferWall.partner = "offerwalls"
-                                if (obj["offer_status"] == "Active") {
+                try {
+                    val Response = JSONObject(App.getInstance().deData(response.toString()))
+                    if (!Response.getBoolean("error")) {
+                        val offerwalls = Response.getJSONArray("offerwalls")
+                        for (i in 0 until offerwalls.length()) {
+                            val obj = offerwalls.getJSONObject(i)
+                            val singleOfferWall = OfferWalls()
+                            singleOfferWall.offerid = obj.getString("offer_id")
+                            singleOfferWall.title = obj.getString("offer_title")
+                            singleOfferWall.subtitle = obj.getString("offer_subtitle")
+                            singleOfferWall.image = obj.getString("offer_thumbnail")
+                            singleOfferWall.amount = obj.getString("offer_points")
+                            singleOfferWall.type = obj.getString("offer_type")
+                            singleOfferWall.status = obj.getString("offer_status")
+                            singleOfferWall.url = obj.getString("offer_url")
+                            singleOfferWall.partner = "offerwalls"
+                            if (obj["offer_status"] == "Active") {
 
-                                    offeres.add(singleOfferWall)
-                                }
-                                if (obj["offer_type"] == "admantum") {
-                                    offeres.remove(singleOfferWall)
-                                }
+                                offeres.add(singleOfferWall)
                             }
-
+                            if (obj["offer_type"] == "admantum") {
+                                offeres.remove(singleOfferWall)
+                            }
                         }
-                        offewalllist.postValue(offeres)
-
-
-                    } catch (e: JSONException) {
 
                     }
-                })
+                    offewalllist.postValue(offeres)
+
+
+                } catch (e: JSONException) {
+
+                }
+            })
             {
                     error ->
+
 
 
             }
@@ -80,49 +85,49 @@ class AppViewModelKotlin() : ViewModel() {
 
         }
 
-return offewalllist
+        return offewalllist
     }
 
-     fun getAllOfferApi():MutableLiveData<ArrayList<Offers>>
-     {
-         val offewalllist = MutableLiveData<ArrayList<Offers>>()
-         var offeres = ArrayList<Offers>()
+    fun getAllOfferApi():MutableLiveData<ArrayList<Offers>>
+    {
+        val offewalllist = MutableLiveData<ArrayList<Offers>>()
+        var offeres = ArrayList<Offers>()
 
-         viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(Dispatchers.IO) {
 
-             if (App.getInstance().get("ADMANTUM_GOT_RESPONSE", false)) {
-                 try {
-                     val response_obj = JSONObject(App.getInstance().get("ADMANTUM_RESPONSE", ""))
-                     parse_admantum_offers(response_obj)
-                 } catch (t: Throwable) {
-                     //do nothin
-                 }
-             }
-             val adMantumOffersRequest: CustomRequest = object : CustomRequest(
-                 Method.POST, Constants.API_ADMANTUM, null,
-                 Response.Listener { response ->
-                     offeres=    parse_admantum_offers(response)
-                     offewalllist.postValue(offeres)
-                     Log.d("TAG", "onResponse: $response")
-                 },
-                 Response.ErrorListener {
-                     // do nothin
-                 }) {
-                 override fun getParams(): Map<String, String> {
-                     val params: MutableMap<String, String> = HashMap()
-                     params["country"] = App.getInstance().countryCode
-                     params["uid"] = App.getInstance().username
-                     params["device"] = "android"
-                     return params
-                 }
-             }
-             App.getInstance().addToRequestQueue(adMantumOffersRequest)
-         }
+            if (App.getInstance().get("ADMANTUM_GOT_RESPONSE", false)) {
+                try {
+                    val response_obj = JSONObject(App.getInstance().get("ADMANTUM_RESPONSE", ""))
+                    parse_admantum_offers(response_obj)
+                } catch (t: Throwable) {
+                    //do nothin
+                }
+            }
+            val adMantumOffersRequest: CustomRequest = object : CustomRequest(
+                Method.POST, Constants.API_ADMANTUM, null,
+                Response.Listener { response ->
+                    offeres=    parse_admantum_offers(response)
+                    offewalllist.postValue(offeres)
+                    Log.d("TAG", "onResponse: $response")
+                },
+                Response.ErrorListener {
+                    // do nothin
+                }) {
+                override fun getParams(): Map<String, String> {
+                    val params: MutableMap<String, String> = HashMap()
+                    params["country"] = App.getInstance().countryCode
+                    params["uid"] = App.getInstance().username
+                    params["device"] = "android"
+                    return params
+                }
+            }
+            App.getInstance().addToRequestQueue(adMantumOffersRequest)
+        }
 
-         return offewalllist
-     }
+        return offewalllist
+    }
 
-     fun parse_admantum_offers(admantum_response: JSONObject) :ArrayList<Offers>
+    fun parse_admantum_offers(admantum_response: JSONObject) :ArrayList<Offers>
     {
         val offeres = ArrayList<Offers>()
         viewModelScope.launch(Dispatchers.IO) {
@@ -183,7 +188,7 @@ return offewalllist
         return offeres
     }
 
-    fun getAllID( context: Context):MutableLiveData<AdsSetting>
+    fun getAllID( ):MutableLiveData<AdsSetting>
     {
 
 
@@ -192,9 +197,6 @@ return offewalllist
         viewModelScope.launch(Dispatchers.IO)
         {
 
-            val sp: SharedPreferences =
-                context.getSharedPreferences("PREFS_GAME", Context.MODE_PRIVATE)
-            var editor = sp.edit()
 
             RetrofitClint.getInstance().getIdAd("Bearer " + App.getInstance().accessToken)
                 .enqueue(object : Callback<AdsSetting> {
@@ -213,7 +215,9 @@ return offewalllist
                     }
 
                     override fun onFailure(call: Call<AdsSetting>, t: Throwable) {
-                        TODO("Not yet implemented")
+
+
+
                     }
 
 
@@ -256,6 +260,85 @@ return offewalllist
         return point
     }
 
+
+    fun getPoinWatchingAdd()
+    {
+        GlobalScope.launch(Dispatchers.IO) {
+
+
+            val uploadpointParmater = UploadpointParmater()
+            uploadpointParmater.user_id = App.getInstance().id.toString() + ""
+            uploadpointParmater.point_id = "1"
+
+            val ss = App.getInstance().accessToken
+
+
+            RetrofitClint.getInstance().gettime(
+                "Bearer " + App.getInstance().accessToken,
+                App.getInstance().id.toString() + "",
+                "1"
+            )
+                .enqueue(object : Callback<GetTimes> {
+                    override fun onResponse(
+                        call: Call<GetTimes>,
+                        response: retrofit2.Response<GetTimes>
+                    ) {
+                        if (response.isSuccessful) {
+                            AccountActvity.times_adom = response.body()!!.times
+                            val uploadpointParmater2 = UploadpointParmater()
+                            uploadpointParmater2.user_id = App.getInstance().id.toString() + ""
+                            uploadpointParmater2.point_id = "2"
+                            Log.d(
+                                ActivityBase.TAG,
+                                "onResponse:1 " + AccountActvity.times_adom + " " + AccountActvity.times_fac
+                            )
+
+                        }
+                    }
+
+                    override fun onFailure(call: Call<GetTimes>, t: Throwable) {
+                        Log.d(ActivityBase.TAG, "onFailure: " + t.message)
+                    }
+                })
+
+
+            RetrofitClint.getInstance().gettime("Bearer " + App.getInstance().accessToken, App.getInstance().id.toString() + "", "2").enqueue(object : Callback<GetTimes> {
+                override fun onResponse(call: Call<GetTimes>, response2: retrofit2.Response<GetTimes>) {
+                    if (response2.isSuccessful) {
+                        AccountActvity.times_fac = response2.body()!!.times
+                        Log.d(ActivityBase.TAG, "onResponse:2 " + AccountActvity.times_adom + " " + AccountActvity.times_fac)
+                    }
+                }
+
+                override fun onFailure(call: Call<GetTimes>, t: Throwable) {
+                    Log.d(ActivityBase.TAG, "onFailure: " + t.message)
+                }
+            })
+
+
+            val s = App.getInstance().id.toString()
+
+            RetrofitClint.getInstance().getpointAdCall("Bearer " + App.getInstance().accessToken)
+                .enqueue(object : Callback<GetpointAd> {
+                    override fun onResponse(
+                        call: Call<GetpointAd>,
+                        response: retrofit2.Response<GetpointAd>
+                    ) {
+                        if (response.isSuccessful) {
+                            AccountActvity.point_Admob = response.body()!!.data[1].points.toInt()
+                            AccountActvity.point_adfac = response.body()!!.data[0].points.toInt()
+                            Log.d(
+                                ActivityBase.TAG,
+                                "onResponse:3 " + AccountActvity.point_Admob + "  " + AccountActvity.point_adfac
+                            )
+                        }
+                    }
+
+                    override fun onFailure(call: Call<GetpointAd>, t: Throwable) {}
+                })
+
+        }
+    }
 
 
 

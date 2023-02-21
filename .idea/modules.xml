@@ -2,11 +2,11 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/KPI_Money_1.iml" filepath="$PROJECT_DIR$/.idea/modules/KPI_Money_1.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/KPI_Money_1.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/KPI_Money_1.app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/KPI_Money_1.app.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/KPI_Money_1.app.androidTest.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/KPI_Money_1.app.main.iml" filepath="$PROJECT_DIR$/.idea/modules/app/KPI_Money_1.app.main.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/KPI_Money_1.app.unitTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/KPI_Money_1.app.unitTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/KPIMoney.iml" filepath="$PROJECT_DIR$/.idea/modules/KPIMoney.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/KPIMoney.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/KPIMoney.app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/KPIMoney.app.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/KPIMoney.app.androidTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/KPIMoney.app.main.iml" filepath="$PROJECT_DIR$/.idea/modules/app/KPIMoney.app.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/KPIMoney.app.unitTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/KPIMoney.app.unitTest.iml" />
     </modules>
   </component>
 </project>

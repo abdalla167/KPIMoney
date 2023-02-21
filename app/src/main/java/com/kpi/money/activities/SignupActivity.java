@@ -79,10 +79,10 @@ public class SignupActivity extends ActivityBase implements GoogleApiClient.OnCo
             getSupportActionBar().setHomeButtonEnabled(true);
         }
 
-         signupUsername = findViewById(R.id.signupUsername);
-         signupFullname = findViewById(R.id.signupFullname);
-         signupPassword = findViewById(R.id.signupPassword);
-         signupEmail = findViewById(R.id.signupEmail);
+        signupUsername = findViewById(R.id.signupUsername);
+        signupFullname = findViewById(R.id.signupFullname);
+        signupPassword = findViewById(R.id.signupPassword);
+        signupEmail = findViewById(R.id.signupEmail);
 
         CardView signupJoinBtn = findViewById(R.id.signupJoinBtn);
 

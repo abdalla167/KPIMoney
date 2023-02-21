@@ -4,6 +4,7 @@ import static com.kpi.money.constants.Constants.ACCOUNT_REDEEM;
 import static com.kpi.money.constants.Constants.DEBUG_MODE;
 import static com.kpi.money.constants.Constants.ERROR_SUCCESS;
 
+import android.animation.ValueAnimator;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -15,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -28,6 +30,7 @@ import com.android.volley.VolleyError;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
+import com.google.android.material.progressindicator.CircularProgressIndicator;
 import com.kpi.money.R;
 import com.kpi.money.app.App;
 import com.kpi.money.constants.Constants;
@@ -105,7 +108,7 @@ public class PayoutsAdapter extends RecyclerView.Adapter<PayoutsAdapter.ViewHold
             holder.amount.setText(context.getResources().getString(R.string.redeem));
         }
 
-        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN && App.getInstance().get("REDEEM_DISPLAY_AMOUNT_BG", false)) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN && App.getInstance().get("REDEEM_DISPLAY_AMOUNT_BG", false)) {
 
             holder.amount.setTextColor(context.getResources().getColor(R.color.white));
             holder.amount.setTextSize(14);
@@ -142,6 +145,22 @@ public class PayoutsAdapter extends RecyclerView.Adapter<PayoutsAdapter.ViewHold
             }
         });
 
+        ValueAnimator animation = ValueAnimator.ofFloat(0f, Integer.parseInt(App.getInstance().getBalance()));
+        animation.setDuration(2000);
+        animation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator updatedAnimation) {
+
+                Integer animatedValue = Math.round( (float)updatedAnimation.getAnimatedValue());
+                holder.progressBar.setMax(Integer.parseInt(payout.getReqPoints()));
+                holder.progressBar.setProgress(animatedValue);
+
+            }
+        });
+        animation.start();
+
+
+
     }
 
     @Override
@@ -153,6 +172,7 @@ public class PayoutsAdapter extends RecyclerView.Adapter<PayoutsAdapter.ViewHold
         TextView date, tnName, tncat, amount;
         ImageView image;
         ConstraintLayout SingleItem;
+        ProgressBar progressBar;
 
         ViewHolder(View itemView) {
             super(itemView);
@@ -163,6 +183,7 @@ public class PayoutsAdapter extends RecyclerView.Adapter<PayoutsAdapter.ViewHold
             amount = itemView.findViewById(R.id.amount);
             image = itemView.findViewById(R.id.image);
             SingleItem = itemView.findViewById(R.id.SingleItem);
+            progressBar=itemView.findViewById(R.id.progress_bar_point);
         }
     }
 

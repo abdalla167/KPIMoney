@@ -30,8 +30,10 @@ import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
 import com.kpi.money.R;
 import com.kpi.money.activities.MainActivityvTwo;
 import com.kpi.money.constants.Constants;
+import com.kpi.money.fragments.HomFragmentSecoundEdite;
 import com.kpi.money.model.OfferWalls;
 import com.kpi.money.services.CheckVpn;
+import com.kpi.money.utils.AppUtils;
 
 import java.util.List;
 
@@ -39,8 +41,8 @@ public class OfferWallsAdapter extends RecyclerView.Adapter<OfferWallsAdapter.My
 
     private Context context;
 
+    HomFragmentSecoundEdite homFragmentSecoundEdite;
     private List<OfferWalls> offerWallsList;
-    InterstitialAd interstitial;
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
@@ -61,9 +63,10 @@ public class OfferWallsAdapter extends RecyclerView.Adapter<OfferWallsAdapter.My
 
     }
 
-    public OfferWallsAdapter(Context mainActivityContacts, List<OfferWalls> offerWallsList) {
+    public OfferWallsAdapter(Context mainActivityContacts, List<OfferWalls> offerWallsList, HomFragmentSecoundEdite homFragmentSecoundEdite) {
         this.offerWallsList = offerWallsList;
         this.context = mainActivityContacts;
+        this.homFragmentSecoundEdite=homFragmentSecoundEdite;
     }
 
     @NonNull
@@ -113,7 +116,7 @@ public class OfferWallsAdapter extends RecyclerView.Adapter<OfferWallsAdapter.My
                     dialog.show();
                 }
                 else {
-                    ((MainActivityvTwo) context).openOfferWall(offerWalls.getTitle(), offerWalls.getSubtitle(), offerWalls.getType(), offerWalls.getUrl());
+                    homFragmentSecoundEdite.openOfferWall(offerWalls.getTitle(), offerWalls.getSubtitle(), offerWalls.getType(), offerWalls.getUrl());
                 }
             } // END ON CLICK
         });
@@ -125,44 +128,7 @@ public class OfferWallsAdapter extends RecyclerView.Adapter<OfferWallsAdapter.My
         return offerWallsList.size();
     }
 
-    void init_admob(){
 
-        if (interstitial != null) {
-            interstitial.show((Activity) context);
-        }
-
-        AdRequest adRequest = new AdRequest.Builder().build();
-        MobileAds.initialize(context, new OnInitializationCompleteListener() {
-            @Override
-            public void onInitializationComplete(InitializationStatus initializationStatus) {
-            }
-        });
-        InterstitialAd.load(context,context.getResources().getString(R.string.interstitial_ad_unit_id), adRequest,
-                new InterstitialAdLoadCallback() {
-                    @Override
-                    public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
-
-                        // an ad is loaded.
-                        interstitial = interstitialAd;
-                        Log.d("Spiner", "onAdLoaded");
-                    }
-
-                    @Override
-                    public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
-
-                        Log.d("Spiner", loadAdError.getMessage());
-                        interstitial = null;
-                    }
-                });
-
-        displayInterstitialAd();
-    }
-
-    public void displayInterstitialAd() {
-        if (interstitial != null) {
-            interstitial.show((Activity) context);
-        }
-    }
 }
 
 

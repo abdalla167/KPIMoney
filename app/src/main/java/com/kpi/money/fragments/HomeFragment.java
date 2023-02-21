@@ -245,7 +245,7 @@ public class HomeFragment extends Fragment implements Constants {
         /* Offers Walls Listview code is here*/
         offerwalls_list = view.findViewById(R.id.offerwalls_list);
         offerWalls = new ArrayList<>();
-        offerWallsAdapter = new OfferWallsAdapter(getActivity(), offerWalls);
+       // offerWallsAdapter = new OfferWallsAdapter(getActivity(), offerWalls);
 
         cardView.setOnClickListener(new View.OnClickListener() {
             @Override

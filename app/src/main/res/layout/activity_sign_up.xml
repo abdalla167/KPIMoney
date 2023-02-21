@@ -133,14 +133,11 @@
 
                         <com.google.android.material.textfield.TextInputLayout
                             style="@style/parent.TextLayout"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_gravity="center"
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
                             android:background="#74FFFFFF"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent">
+                            app:layout_constraintHeight_percent="1"
+                            app:layout_constraintWidth_percent="1">
 
                             <EditText
                                 android:id="@+id/signupFullname"
@@ -180,20 +177,18 @@
 
                         <com.google.android.material.textfield.TextInputLayout
                             style="@style/parent.TextLayout"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_gravity="center"
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
                             android:background="#74FFFFFF"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent">
+                            app:layout_constraintHeight_percent="1"
+                            app:layout_constraintWidth_percent="1">
 
                             <EditText
                                 android:id="@+id/signupUsername"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:layout_marginLeft="@dimen/space5"
+
                                 android:layout_marginBottom="@dimen/space5"
                                 android:background="@android:color/transparent"
                                 android:hint="    UserName"
@@ -228,14 +223,11 @@
                         >
                         <com.google.android.material.textfield.TextInputLayout
                             style="@style/parent.TextLayout"
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
                             android:background="#74FFFFFF"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_gravity="center"
+                            app:layout_constraintHeight_percent="1"
+                            app:layout_constraintWidth_percent="1"
 
                             >
 
@@ -244,7 +236,6 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:background="@android:color/transparent"
-                                android:drawableLeft="@drawable/emailicon"
                                 android:hint="   Email"
                                 android:textSize="@dimen/space15"
                                 android:layout_marginBottom="@dimen/space5"
@@ -283,15 +274,11 @@
 
                         <com.google.android.material.textfield.TextInputLayout
                             style="@style/parent.TextLayout"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_gravity="center"
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
                             android:background="#74FFFFFF"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-
+                            app:layout_constraintHeight_percent="1"
+                            app:layout_constraintWidth_percent="1"
                             >
 
                             <EditText
@@ -301,7 +288,6 @@
                                 android:layout_marginLeft="@dimen/space5"
                                 android:layout_marginBottom="@dimen/space5"
                                 android:background="@android:color/transparent"
-                                android:drawableLeft="@drawable/locke"
                                 android:hint="   Password"
                                 android:inputType="textPassword"
                                 android:textSize="@dimen/space15"

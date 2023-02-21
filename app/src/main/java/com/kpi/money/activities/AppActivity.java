@@ -124,10 +124,10 @@ public class AppActivity extends ActivityBase {
 
 
             AppViewModelKotlin appViewModelKotlin=new AppViewModelKotlin();
+            appViewModelKotlin.getPoinWatchingAdd();
 
 
-
-            appViewModelKotlin.getAllID(this).observe(this, new Observer<AdsSetting>() {
+            appViewModelKotlin.getAllID().observe(this, new Observer<AdsSetting>() {
                 @Override
                 public void onChanged(AdsSetting adsSetting) {
                     SharedPreferences sp = getSharedPreferences("PREFS_GAME" , Context.MODE_PRIVATE);
@@ -146,6 +146,8 @@ public class AppActivity extends ActivityBase {
                     editor.putString("fa_interstitial_ad_unit_id", adsSetting.getData().get(0).getAdmob_pub_id().toString().trim());
                     editor.putString("fa_reward_id",adsSetting.getData().get(0).getFacebook_rads_p_id().toString().trim());
                     editor.commit();
+
+                    Log.d(TAG, "onChanged: "+adsSetting.getData().get(0).getAdmob_bads_id());
                     try {
                         ApplicationInfo ai = getPackageManager().getApplicationInfo(getPackageName(), PackageManager.GET_META_DATA);
                         Bundle bundle = ai.metaData;
@@ -166,71 +168,50 @@ public class AppActivity extends ActivityBase {
             });
 
 
-
-            RetrofitClint.getInstance().getIdAd("Bearer " + App.getInstance().getAccessToken()).enqueue(new Callback<AdsSetting>() {
-                @Override
-                public void onResponse(Call<AdsSetting> call, retrofit2.Response<AdsSetting> response) {
-
-                    if(response.isSuccessful()) {
-
-
-
-
-                    }
-
-                }
-
-                @Override
-                public void onFailure(Call<AdsSetting> call, Throwable t) {
-
-                }
-            });
-
-
-          //   String s=  sp.getString("admob_appId","ca-app-pub-3940256099942544/3419835294");
+            //   String s=  sp.getString("admob_appId","ca-app-pub-3940256099942544/3419835294");
 
 
             CustomRequest jsonReq = new CustomRequest(Request.Method.POST, METHOD_ACCOUNT_AUTHORIZE, null, new Response.Listener<JSONObject>() {
-                        @Override
-                        public void onResponse(JSONObject response) {
+                @Override
+                public void onResponse(JSONObject response) {
 
-                            if (App.getInstance().authorize(response))
-                            {
+                    if (App.getInstance().authorize(response))
+                    {
 
-                                if (App.getInstance().getState() == ACCOUNT_STATE_ENABLED)
-                                {
+                        if (App.getInstance().getState() == ACCOUNT_STATE_ENABLED)
+                        {
 
-                                    // AppInit();
-                                    ActivityCompat.finishAffinity(AppActivity.this);
-                                    Intent i = new Intent(getApplicationContext(), MainActivityvTwo.class);
-                                    startActivity(i);
+                            // AppInit();
+                            ActivityCompat.finishAffinity(AppActivity.this);
+                            Intent i = new Intent(getApplicationContext(), MainActivityvTwo.class);
+                            startActivity(i);
 
-                                }
-                                else
-                                {
-                                    showContentScreen();
-                                    App.getInstance().logout();
-                                }
-
-                            } else if(App.getInstance().getErrorCode() == 699 || App.getInstance().getErrorCode() == 999){
-
-                                Dialogs.validationError(AppActivity.this,App.getInstance().getErrorCode());
-
-                            } else if(App.getInstance().getErrorCode() == 799){
-
-                                Dialogs.warningDialog(AppActivity.this, getResources().getString(R.string.update_app), getResources().getString(R.string.update_app_description), false, false, "", getResources().getString(R.string.update), new SweetAlertDialog.OnSweetClickListener() {
-                                    @Override
-                                    public void onClick(SweetAlertDialog sweetAlertDialog) {
-                                        AppUtils.gotoMarket(AppActivity.this);
-                                    }
-                                });
-
-                            } else {
-
-                                showContentScreen();
-                            }
                         }
-                    }, new Response.ErrorListener() {
+                        else
+                        {
+                            showContentScreen();
+                            App.getInstance().logout();
+                        }
+
+                    } else if(App.getInstance().getErrorCode() == 699 || App.getInstance().getErrorCode() == 999){
+
+                        Dialogs.validationError(AppActivity.this,App.getInstance().getErrorCode());
+
+                    } else if(App.getInstance().getErrorCode() == 799){
+
+                        Dialogs.warningDialog(AppActivity.this, getResources().getString(R.string.update_app), getResources().getString(R.string.update_app_description), false, false, "", getResources().getString(R.string.update), new SweetAlertDialog.OnSweetClickListener() {
+                            @Override
+                            public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                AppUtils.gotoMarket(AppActivity.this);
+                            }
+                        });
+
+                    } else {
+
+                        showContentScreen();
+                    }
+                }
+            }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
 
