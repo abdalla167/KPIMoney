@@ -1,9 +1,19 @@
 package com.kpi.money.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.media.RingtoneManager;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -28,7 +38,11 @@ public class WebsiteActivity extends AppCompatActivity {
     ResponseWebSite responseWebSite;
     AVLoadingIndicatorView avLoadingIndicatorView;
 
+    private static final String TAG = "MyFirebaseMsgService";
 
+    NotificationCompat.Builder notificationBuilder;
+
+    Bitmap image;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,5 +80,53 @@ public class WebsiteActivity extends AppCompatActivity {
         });
 
     }
+    public void sendNotification(String tag, String title, String messageBody, String type) {
+
+        Uri defaultSoundUri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+
+        String channelId = "fcm_default_channel";
+        String channelName = getResources().getString(R.string.app_name);
+
+
+
+        notificationBuilder = new NotificationCompat.Builder(this,channelId)
+                .setSmallIcon(R.mipmap.ic_launcher)
+                .setContentTitle(title)
+                .setContentText(messageBody)
+                .setAutoCancel(true)
+                .setSound(defaultSoundUri);
+
+
+        if(type.equals("transactions")){
+
+            Intent transactionsintent = new Intent(this, FragmentsActivity.class);
+            transactionsintent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            transactionsintent.putExtra("show","transactions");
+            PendingIntent transactionsIntent = PendingIntent.getActivity(this, 0, transactionsintent, PendingIntent.FLAG_IMMUTABLE);
+            notificationBuilder.setContentIntent(transactionsIntent);
+
+        }else{
+
+            Intent appintent = new Intent(this, AppActivity.class);
+            appintent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            PendingIntent appIntent = PendingIntent.getActivity(this, 0, appintent, PendingIntent.FLAG_IMMUTABLE);
+            notificationBuilder.setContentIntent(appIntent);
+
+        }
+
+        NotificationManager notificationManager = (NotificationManager)this. getSystemService(Context.NOTIFICATION_SERVICE);
+
+        // Since android Oreo notification channel is needed.
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            notificationManager.createNotificationChannel(new NotificationChannel(channelId,
+                    channelName, NotificationManager.IMPORTANCE_HIGH));
+        }
+
+        int Notification_ID = App.getInstance().get("noid",10)+1;
+        App.getInstance().store("noid",Notification_ID);
+
+        notificationManager.notify(Notification_ID , notificationBuilder.build());
+    }
+
 
 }

@@ -65,54 +65,70 @@
         android:id="@+id/cardView_spin_win"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:backgroundTint="#FA5E5B"
+        android:backgroundTint="#FF817F"
         app:cardCornerRadius="@dimen/space10"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHeight_percent="0.25"
-        app:layout_constraintWidth_percent="0.3"
-        app:layout_constraintHorizontal_bias="0.926"
-        app:layout_constraintStart_toEndOf="@+id/cardView_daily_chickin"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.031"
-     >
+        app:layout_constraintHeight_percent="0.08"
+        app:layout_constraintHorizontal_bias="0.1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cardView_instruction"
+        app:layout_constraintVertical_bias="0.060000002"
+        app:layout_constraintWidth_percent="0.72">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center">
 
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/imageView3"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:src="#ffff"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHeight_percent="0.9"
+                app:layout_constraintHorizontal_bias="0.061"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+
+                app:layout_constraintVertical_bias="0.517"
+                app:layout_constraintWidth_percent="0.2" />
+
+
             <ImageView
-                android:id="@+id/imageView2"
+                android:id="@+id/imageView31"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:src="@drawable/spinwin"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHeight_percent="0.4"
-                app:layout_constraintWidth_percent="0.4"
-                app:layout_constraintHorizontal_bias="0.493"
-
+                app:layout_constraintHeight_percent="0.6"
+                app:layout_constraintHorizontal_bias="0.06"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.219"
-               />
+                app:layout_constraintVertical_bias="0.526"
+                app:layout_constraintWidth_percent="0.2" />
+
 
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="0dp"
+                android:background="@drawable/buttonmoreoption"
                 android:gravity="center"
-                android:text="Spin &amp; Win"
+                android:text="@string/spin"
                 android:textColor="@color/white"
                 android:textSize="@dimen/space10"
-                android:background="@drawable/buttonmoreoption"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHeight_percent="0.15"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/imageView2"
-                app:layout_constraintWidth_percent="0.8" />
+                app:layout_constraintHeight_percent="0.5"
+                app:layout_constraintHorizontal_bias="0.692"
+                app:layout_constraintStart_toEndOf="@+id/imageView3"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintWidth_percent="0.5" />
         </androidx.constraintlayout.widget.ConstraintLayout>
+
 
     </androidx.cardview.widget.CardView>
 
@@ -120,91 +136,121 @@
         android:id="@+id/cardView_instruction"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:backgroundTint="#FAD462"
+        android:backgroundTint="#FFDF7F"
         app:cardCornerRadius="@dimen/space15"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHeight_percent="0.25"
+        app:layout_constraintHeight_percent="0.08"
         app:layout_constraintHorizontal_bias="0.107"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cardView_daily_chickin"
         app:layout_constraintVertical_bias="0.0"
-        app:layout_constraintWidth_percent="0.3">
+        app:layout_constraintWidth_percent="0.8">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_gravity="center"
-            >
+            android:layout_gravity="center">
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/imageView3"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:src="#ffff"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHeight_percent="0.9"
+                app:layout_constraintWidth_percent="0.2"
+                app:layout_constraintHorizontal_bias="0.061"
+                app:layout_constraintStart_toStartOf="parent"
+
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.517"
+                />
+
 
             <ImageView
-                android:id="@+id/imageView3"
+                android:id="@+id/imageView31"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:src="@drawable/instructions"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHeight_percent="0.4"
-                app:layout_constraintWidth_percent="0.4"
-                app:layout_constraintHorizontal_bias="0.493"
-
+                app:layout_constraintHeight_percent="0.6"
+                app:layout_constraintHorizontal_bias="0.06"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.219"
-                />
+                app:layout_constraintVertical_bias="0.526"
+                app:layout_constraintWidth_percent="0.2" />
 
             <TextView
+                android:id="@+id/textView16"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
+                android:background="@drawable/buttonmoreoption"
+                android:gravity="center"
                 android:text="@string/instructions"
-                app:layout_constraintHeight_percent="0.15"
-                app:layout_constraintWidth_percent="0.8"
+                android:textColor="@color/white"
+                android:textSize="@dimen/space10"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                android:textColor="@color/white"
-                android:gravity="center"
-                android:textSize="@dimen/space10"
-                android:background="@drawable/buttonmoreoption"
-                app:layout_constraintTop_toBottomOf="@+id/imageView3" />
+                app:layout_constraintHeight_percent="0.5"
+                app:layout_constraintHorizontal_bias="0.692"
+                app:layout_constraintStart_toEndOf="@+id/imageView3"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintWidth_percent="0.5" />
         </androidx.constraintlayout.widget.ConstraintLayout>
+
     </androidx.cardview.widget.CardView>
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView_share_app"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginEnd="16dp"
-        android:backgroundTint="#FFB952"
+        android:backgroundTint="#FFCB7E"
         app:cardCornerRadius="@dimen/space15"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHeight_percent="0.25"
-        app:layout_constraintHorizontal_bias="0.974"
-        app:layout_constraintStart_toEndOf="@+id/cardView_instruction"
+        app:layout_constraintHeight_percent="0.08"
+        app:layout_constraintHorizontal_bias="0.1"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cardView_spin_win"
-        app:layout_constraintVertical_bias="0.173"
-        app:layout_constraintWidth_percent="0.3">
+        app:layout_constraintVertical_bias="0.060000002"
+        app:layout_constraintWidth_percent="0.64">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="120dp"
-            android:layout_height="149dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_gravity="center">
 
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/imageView3"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:src="#ffff"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHeight_percent="0.9"
+                app:layout_constraintHorizontal_bias="0.061"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+
+                app:layout_constraintVertical_bias="0.517"
+                app:layout_constraintWidth_percent="0.2" />
+
+
             <ImageView
-                android:id="@+id/imageView4"
+                android:id="@+id/imageView31"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:src="@drawable/shareicone"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHeight_percent="0.4"
-                app:layout_constraintHorizontal_bias="0.493"
+                app:layout_constraintHeight_percent="0.6"
+                app:layout_constraintHorizontal_bias="0.06"
                 app:layout_constraintStart_toStartOf="parent"
-
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.219"
-                app:layout_constraintWidth_percent="0.4" />
+                app:layout_constraintVertical_bias="0.526"
+                app:layout_constraintWidth_percent="0.2" />
 
             <TextView
                 android:layout_width="0dp"
@@ -216,12 +262,12 @@
                 android:textSize="@dimen/space10"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHeight_percent="0.15"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/imageView4"
-                app:layout_constraintWidth_percent="0.8" />
+                app:layout_constraintHeight_percent="0.5"
+                app:layout_constraintHorizontal_bias="0.692"
+                app:layout_constraintStart_toEndOf="@+id/imageView3"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintWidth_percent="0.5" />
         </androidx.constraintlayout.widget.ConstraintLayout>
-
     </androidx.cardview.widget.CardView>
 
     <androidx.cardview.widget.CardView
@@ -231,49 +277,63 @@
         app:cardCornerRadius="@dimen/space15"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHeight_percent="0.25"
-        app:layout_constraintHorizontal_bias="0.534"
+        app:layout_constraintHeight_percent="0.08"
+        app:layout_constraintHorizontal_bias="0.1"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cardView_transaction"
+        app:layout_constraintVertical_bias="0.060000002"
+        app:layout_constraintWidth_percent="0.5">
 
-        app:layout_constraintTop_toBottomOf="@+id/cardView_share_app"
-        app:layout_constraintVertical_bias="0.528"
-        app:layout_constraintWidth_percent="0.3">
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_gravity="center"
-            >
+            android:layout_gravity="center">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/imageView3"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:src="#ffff"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHeight_percent="0.9"
+                app:layout_constraintHorizontal_bias="0.061"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+
+                app:layout_constraintVertical_bias="0.517"
+                app:layout_constraintWidth_percent="0.2" />
+
 
             <ImageView
-                android:id="@+id/imageView5"
+                android:id="@+id/imageView31"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:src="@drawable/aboutusicon"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHeight_percent="0.4"
-                app:layout_constraintWidth_percent="0.4"
-                app:layout_constraintHorizontal_bias="0.493"
-
+                app:layout_constraintHeight_percent="0.6"
+                app:layout_constraintHorizontal_bias="0.06"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.219"
-                />
+                app:layout_constraintVertical_bias="0.526"
+                app:layout_constraintWidth_percent="0.2" />
 
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="0dp"
+                android:background="@drawable/buttonmoreoption"
+                android:gravity="center"
                 android:text="@string/about"
-                app:layout_constraintHeight_percent="0.15"
-                app:layout_constraintWidth_percent="0.8"
+                android:textColor="@color/white"
+                android:textSize="@dimen/space10"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                android:textColor="@color/white"
-                android:gravity="center"
-                android:textSize="@dimen/space10"
-                android:background="@drawable/buttonmoreoption"
-                app:layout_constraintTop_toBottomOf="@+id/imageView5" />
+                app:layout_constraintHeight_percent="0.5"
+                app:layout_constraintHorizontal_bias="0.692"
+                app:layout_constraintStart_toEndOf="@+id/imageView3"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintWidth_percent="0.5" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.cardview.widget.CardView>
@@ -334,53 +394,68 @@
         android:id="@+id/cardView_transaction"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintHeight_percent="0.25"
-        app:layout_constraintWidth_percent="0.3"
+        android:backgroundTint="#7EFFAD"
         app:cardCornerRadius="@dimen/space15"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:backgroundTint="@color/green_light"
-        app:layout_constraintHorizontal_bias="0.109"
+        app:layout_constraintHeight_percent="0.08"
+        app:layout_constraintHorizontal_bias="0.1"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cardView_video"
-        app:layout_constraintVertical_bias="0.029"
-   >
+        app:layout_constraintTop_toBottomOf="@+id/cardView_share_app"
+        app:layout_constraintVertical_bias="0.060000002"
+        app:layout_constraintWidth_percent="0.56">
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_gravity="center"
-            >
+            android:layout_gravity="center">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/imageView3"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:src="#ffff"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHeight_percent="0.9"
+                app:layout_constraintHorizontal_bias="0.061"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+
+                app:layout_constraintVertical_bias="0.517"
+                app:layout_constraintWidth_percent="0.2" />
+
 
             <ImageView
-                android:id="@+id/imageView7"
+                android:id="@+id/imageView31"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:src="@drawable/transaction"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHeight_percent="0.4"
-                app:layout_constraintWidth_percent="0.4"
-                app:layout_constraintHorizontal_bias="0.493"
-
+                app:layout_constraintHeight_percent="0.6"
+                app:layout_constraintHorizontal_bias="0.06"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.219"
-                />
+                app:layout_constraintVertical_bias="0.526"
+                app:layout_constraintWidth_percent="0.2" />
+
 
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="0dp"
+                android:background="@drawable/buttonmoreoption"
+                android:gravity="center"
                 android:text="@string/transactions"
-                app:layout_constraintHeight_percent="0.15"
-                app:layout_constraintWidth_percent="0.8"
+                android:textColor="@color/white"
+                android:textSize="@dimen/space10"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                android:textColor="@color/white"
-                android:gravity="center"
-                android:textSize="@dimen/space10"
-                android:background="@drawable/buttonmoreoption"
-                app:layout_constraintTop_toBottomOf="@+id/imageView7" />
+                app:layout_constraintHeight_percent="0.5"
+                app:layout_constraintHorizontal_bias="0.692"
+                app:layout_constraintStart_toEndOf="@+id/imageView3"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintWidth_percent="0.5" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.cardview.widget.CardView>

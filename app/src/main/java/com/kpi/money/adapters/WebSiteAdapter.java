@@ -1,7 +1,14 @@
 package com.kpi.money.adapters;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,9 +21,14 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
+import androidx.core.app.NotificationCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.kpi.money.R;
+import com.kpi.money.activities.AccountActvity;
+import com.kpi.money.activities.AppActivity;
+import com.kpi.money.activities.FragmentsActivity;
+import com.kpi.money.activities.WebsiteActivity;
 import com.kpi.money.app.App;
 import com.kpi.money.model.website_pac.DataItemWebSite;
 import com.kpi.money.model.website_pac.WebSiteModlePointUpload;
@@ -33,7 +45,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class WebSiteAdapter extends RecyclerView.Adapter<WebSiteAdapter.MyViewHolder> {
-    Context context;
+    WebsiteActivity context;
 
 
     private List<DataItemWebSite> weblist = new ArrayList<>();
@@ -59,7 +71,7 @@ public class WebSiteAdapter extends RecyclerView.Adapter<WebSiteAdapter.MyViewHo
     }
 
 
-    public WebSiteAdapter(Context mainActivityContacts, List<DataItemWebSite> moviesList) {
+    public WebSiteAdapter(WebsiteActivity mainActivityContacts, List<DataItemWebSite> moviesList) {
         this.weblist = moviesList;
         this.context = mainActivityContacts;
     }
@@ -77,7 +89,7 @@ public class WebSiteAdapter extends RecyclerView.Adapter<WebSiteAdapter.MyViewHo
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     @Override
-    public void onBindViewHolder(final MyViewHolder holder, int position) {
+    public void onBindViewHolder(final MyViewHolder holder, @SuppressLint("RecyclerView") int position) {
         holder.title.setText(weblist.get(position).getTitle());
         holder.url.setText(weblist.get(position).getSite_url());
         holder.amount.setText("+" + weblist.get(position).getReward());
@@ -140,6 +152,8 @@ public class WebSiteAdapter extends RecyclerView.Adapter<WebSiteAdapter.MyViewHo
                                                         ok.setOnClickListener(new View.OnClickListener() {
                                                             @Override
                                                             public void onClick(View view) {
+                                                                context.sendNotification("h","Earn Point","You earn "+ AccountActvity.point_Admob+"","f");
+
                                                                 dialog2.dismiss();
                                                             }
                                                         });
@@ -195,6 +209,8 @@ public class WebSiteAdapter extends RecyclerView.Adapter<WebSiteAdapter.MyViewHo
     public int getItemCount() {
         return weblist.size();
     }
+
+
 
 }
 

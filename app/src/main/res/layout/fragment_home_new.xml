@@ -384,15 +384,15 @@
     </androidx.cardview.widget.CardView>
 
 
-
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView12_scound"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/space60"
         android:layout_margin="5dp"
         app:cardCornerRadius="@dimen/space5"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/constraintLayout"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_percent="0.1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cardad"
         app:layout_constraintVertical_bias="0.017">
@@ -408,61 +408,65 @@
                 android:layout_height="wrap_content"
 
 
-                app:layout_constraintStart_toStartOf="parent" />
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <com.wang.avi.AVLoadingIndicatorView
                 android:id="@+id/progressBarOfferwalls_secound"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
                 app:indicatorColor="@color/colorPrimary"
                 app:indicatorName="BallPulseIndicator"
                 app:layout_constraintBottom_toBottomOf="@+id/offerwalls_list_secound"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHeight_percent="0.4"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/offerwalls_list_secound"
-                app:layout_constraintWidth_percent="0.1"
-                app:layout_constraintHeight_percent="0.4"
+                app:layout_constraintVertical_bias="0.555"
 
-                />
+                app:layout_constraintWidth_percent="0.1" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 
+
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHeight_percent="0.58"
-        app:layout_constraintHorizontal_bias="1.0"
 
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cardView12_scound"
-        app:layout_constraintVertical_bias="0.409">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0">
 
         <WebView
             android:id="@+id/webView1"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_api_fragmentscound"
             android:layout_width="match_parent"
-            android:visibility="gone"
             android:layout_height="match_parent"
+            android:visibility="gone"
             app:layout_constraintTop_toTopOf="parent">
 
+    </androidx.recyclerview.widget.RecyclerView>
 
-
-        </androidx.recyclerview.widget.RecyclerView>
-
-
-        <com.wang.avi.AVLoadingIndicatorView
+    <com.wang.avi.AVLoadingIndicatorView
             android:id="@+id/aviscound"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            android:visibility="gone"
             app:indicatorColor="@color/colorPrimary"
             app:indicatorName="BallPulseIndicator"
-            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHeight_percent="0.4"
