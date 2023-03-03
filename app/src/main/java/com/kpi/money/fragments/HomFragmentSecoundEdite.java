@@ -24,6 +24,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebSettings;
@@ -62,6 +63,7 @@ import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
 import com.google.android.gms.ads.rewarded.RewardItem;
 import com.google.android.gms.ads.rewarded.RewardedAd;
 import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback;
+import com.kpi.money.Interfacess.OnItemClickListener;
 import com.kpi.money.R;
 import com.kpi.money.activities.AccountActvity;
 import com.kpi.money.activities.FragmentsActivity;
@@ -129,13 +131,21 @@ public class HomFragmentSecoundEdite  extends Fragment {
         super.onCreate(savedInstanceState);
     }
 
+    @SuppressLint("SetJavaScriptEnabled")
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+webView=view.findViewById(R.id.webView1);
+        //progressBar = ProgressDialog.show(view.getContext(), "", getResources().getString(R.string.loading));
+
+
+
+
     }
 
 
-    @SuppressLint("MissingInflatedId")
+    @SuppressLint({"MissingInflatedId", "SetJavaScriptEnabled"})
     @NonNull
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -157,11 +167,6 @@ public class HomFragmentSecoundEdite  extends Fragment {
         cardadwebsite=view.findViewById(R.id.cardadwebsite);
 
         webView=view.findViewById(R.id.webView1);
-        webView.setWebViewClient(new WebViewClient());
-
-        WebSettings websetting = webView.getSettings();
-
-        websetting.setJavaScriptEnabled(true);
 
 
 
@@ -490,6 +495,9 @@ public class HomFragmentSecoundEdite  extends Fragment {
                 offerwalls_list.setItemAnimator(new DefaultItemAnimator());
                 offerwalls_list.setAdapter(offerWallsAdapter);
                 progressBarOfferwalls.setVisibility(View.GONE);
+
+
+
             }
         });
 //
@@ -580,6 +588,7 @@ public class HomFragmentSecoundEdite  extends Fragment {
     }
 
 
+    @SuppressLint("SetJavaScriptEnabled")
     @Override
     public void onStart() {
         super.onStart();
@@ -590,6 +599,7 @@ public class HomFragmentSecoundEdite  extends Fragment {
         getdata();
 
         init_admob();
+
 
     }
 
@@ -979,7 +989,6 @@ public class HomFragmentSecoundEdite  extends Fragment {
     }
 
     void openAdMantumOfferWall(){
-        progressBar = ProgressDialog.show(getActivity(), "", getResources().getString(R.string.loading));
 
 
 
@@ -987,6 +996,10 @@ public class HomFragmentSecoundEdite  extends Fragment {
 
         if(App.getInstance().get(AdMantumActive,true)){
 
+            webView.setWebViewClient(new WebViewClient());
+            WebSettings websetting = webView.getSettings();
+            webView.getSettings().setJavaScriptEnabled(true);
+            websetting.setJavaScriptEnabled(true);
             webView.setWebViewClient(new WebViewClient() {
                 public boolean shouldOverrideUrlLoading(WebView view, String url) {
 
@@ -1037,7 +1050,10 @@ public class HomFragmentSecoundEdite  extends Fragment {
     public void openOfferDaddyOfferWall(){
 
         String OfferWall_Url = "https://www.offerdaddy.com/wall/"+App.getInstance().get(OfferDaddy_AppId,"")+"/"+App.getInstance().getUsername()+"/";
-
+        webView.setWebViewClient(new WebViewClient());
+        WebSettings websetting = webView.getSettings();
+        webView.getSettings().setJavaScriptEnabled(true);
+        websetting.setJavaScriptEnabled(true);
         webView.setWebViewClient(new WebViewClient() {
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
 
@@ -1081,6 +1097,10 @@ public class HomFragmentSecoundEdite  extends Fragment {
     public void openKiwiWallOfferWall(){
 
         String OfferWall_Url = "https://www.kiwiwall.com/wall/"+App.getInstance().get(KiwiWallWallId,"")+"/"+App.getInstance().getUsername();
+        webView.setWebViewClient(new WebViewClient());
+        WebSettings websetting = webView.getSettings();
+        webView.getSettings().setJavaScriptEnabled(true);
+        websetting.setJavaScriptEnabled(true);
         webView.setWebViewClient(new WebViewClient() {
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
 
@@ -1127,6 +1147,10 @@ public class HomFragmentSecoundEdite  extends Fragment {
 
             String OfferWall_Url = url.replace("{user_id}", App.getInstance().getUsername());
 
+            webView.setWebViewClient(new WebViewClient());
+            WebSettings websetting = webView.getSettings();
+            webView.getSettings().setJavaScriptEnabled(true);
+            websetting.setJavaScriptEnabled(true);
             webView.setWebViewClient(new WebViewClient() {
                 public boolean shouldOverrideUrlLoading(WebView view, String url) {
 
@@ -1178,7 +1202,10 @@ public class HomFragmentSecoundEdite  extends Fragment {
         String OfferWall_Url = App.getInstance().get("CpaLead_DirectLink","")+"&subid="+App.getInstance().getUsername()+"&subid2="+App.getInstance().getUsername();
 
         if(App.getInstance().get("CpaLeadActive",true)){
-
+            webView.setWebViewClient(new WebViewClient());
+            WebSettings websetting = webView.getSettings();
+            webView.getSettings().setJavaScriptEnabled(true);
+            websetting.setJavaScriptEnabled(true);
             webView.setWebViewClient(new WebViewClient() {
                 public boolean shouldOverrideUrlLoading(WebView view, String url) {
 
@@ -1228,7 +1255,10 @@ public class HomFragmentSecoundEdite  extends Fragment {
         String OfferWall_Url = "https://wall.wannads.com/wall?apiKey="+App.getInstance().get("WannadsApiKey","")+"&userId="+App.getInstance().getUsername();
 
         if(App.getInstance().get("WannadsActive",true)){
-
+            webView.setWebViewClient(new WebViewClient());
+            WebSettings websetting = webView.getSettings();
+            webView.getSettings().setJavaScriptEnabled(true);
+            websetting.setJavaScriptEnabled(true);
             webView.setWebViewClient(new WebViewClient() {
                 public boolean shouldOverrideUrlLoading(WebView view, String url) {
 
@@ -1274,14 +1304,15 @@ public class HomFragmentSecoundEdite  extends Fragment {
         }
     }
 
-
-
     public void openAdScendMediaOfferWall(){
 
         String OfferWall_Url = "https://asmwall.com/adwall/publisher/"+App.getInstance().get("AdScendMedia_PubId", "")+"/profile/"+App.getInstance().get("AdScendMedia_AdwallId", "")+"?subid1="+App.getInstance().getUsername();
 
         if(App.getInstance().get("AdScendMediaActive",true)){
-
+            webView.setWebViewClient(new WebViewClient());
+            WebSettings websetting = webView.getSettings();
+            webView.getSettings().setJavaScriptEnabled(true);
+            websetting.setJavaScriptEnabled(true);
             webView.setWebViewClient(new WebViewClient() {
                 public boolean shouldOverrideUrlLoading(WebView view, String url) {
 
