@@ -98,6 +98,12 @@ public class VideosFragment extends Fragment {
         videosAdapter = new VideosAdapter(ctx,allvideos);
         videos.setAdapter(videosAdapter);
 
+        MobileAds.initialize(getContext(), new OnInitializationCompleteListener() {
+            @Override
+            public void onInitializationComplete(InitializationStatus initializationStatus) {
+            }
+        });
+
         CustomRequest  videosRequest = new CustomRequest(Request.Method.POST, APP_VIDEOS,null,
                 new Response.Listener<JSONObject>() {
                     @Override

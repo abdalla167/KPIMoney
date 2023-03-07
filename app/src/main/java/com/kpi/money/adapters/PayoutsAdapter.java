@@ -146,7 +146,7 @@ public class PayoutsAdapter extends RecyclerView.Adapter<PayoutsAdapter.ViewHold
         });
 
         ValueAnimator animation = ValueAnimator.ofFloat(0f, Integer.parseInt(App.getInstance().getBalance()));
-        animation.setDuration(2000);
+        animation.setDuration(3000);
         animation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator updatedAnimation) {

@@ -3,6 +3,7 @@ package com.kpi.money.services;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -14,6 +15,7 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.kpi.money.R;
 import com.kpi.money.activities.AppActivity;
@@ -21,6 +23,7 @@ import com.kpi.money.activities.FragmentsActivity;
 import com.kpi.money.app.App;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
+import com.kpi.money.receiver.BatteryStatusReceiver;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -35,17 +38,28 @@ import static com.kpi.money.constants.Constants.DEBUG_MODE;
  */
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
+    private BatteryStatusReceiver broadcaster;
 
     private static final String TAG = "MyFirebaseMsgService";
 
     NotificationCompat.Builder notificationBuilder;
+    BatteryStatusReceiver mBatteryStatusReceiver;
 
     Bitmap image;
+
+
+
+
+
 
     @Override
     public void onMessageReceived(@NonNull RemoteMessage remoteMessage) {
         // TODO(developer): Handle FCM messages here.
         super.onMessageReceived(remoteMessage);
+
+
+        Intent intent = new Intent("MyData");
+        this.sendBroadcast(intent);
 
         Log.d(TAG, "From : " + remoteMessage.getFrom());
 //        Log.d(TAG, "FCM Data : " + remoteMessage.getData());

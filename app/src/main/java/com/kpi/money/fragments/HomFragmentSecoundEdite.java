@@ -28,7 +28,9 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Display;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -40,6 +42,7 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -66,6 +69,7 @@ import com.google.android.gms.ads.FullScreenContentCallback;
 import com.google.android.gms.ads.LoadAdError;
 import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.OnUserEarnedRewardListener;
+import com.google.android.gms.ads.RequestConfiguration;
 import com.google.android.gms.ads.initialization.InitializationStatus;
 import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 import com.google.android.gms.ads.interstitial.InterstitialAd;
@@ -100,6 +104,7 @@ import com.yashdev.countdowntimer.CountDownTimerView;
 
 import org.json.JSONObject;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Timer;
@@ -120,6 +125,7 @@ public class HomFragmentSecoundEdite  extends Fragment {
     public static WebView webView;
     private OffersAdapter offersAdapter;
     private static final String TAG = "MyFirebaseMsgService";
+    private FrameLayout adContainerView;
 
     NotificationCompat.Builder notificationBuilder;
 
@@ -133,7 +139,7 @@ public class HomFragmentSecoundEdite  extends Fragment {
     AppViewModelKotlin appViewModelKotlin;
     RewardedAd mRewardedAd;
 
-    ProgressDialog progressBar;
+    public static ProgressDialog progressBar;
      public static View view;
 
     public HomFragmentSecoundEdite() {
@@ -153,27 +159,11 @@ public class HomFragmentSecoundEdite  extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-         webView=view.findViewById(R.id.webView1);
-        //progressBar = ProgressDialog.show(view.getContext(), "", getResources().getString(R.string.loading));
-        webView.setOnKeyListener(new View.OnKeyListener() {
-            @SuppressLint("SuspiciousIndentation")
-            @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-                if ((keyCode == KeyEvent.KEYCODE_BACK) && webView.canGoBack()) {
-                    webView.goBack();
-                    return true;
-                }
-                  else
-                return false;
-            }
-        });
-        WebSettings webSettings = webView.getSettings();
-        webSettings.setJavaScriptEnabled(true);
-        webSettings.setGeolocationEnabled(true);
-        webSettings.setSupportMultipleWindows(true);
 
 
 
+        loadRewardedAd();
+        init_admob();
 
     }
 
@@ -193,15 +183,15 @@ public class HomFragmentSecoundEdite  extends Fragment {
         offerwalls_list = view.findViewById(R.id.offerwalls_list_secound);
         refershbalance=view.findViewById(R.id.refreshbalance);
         pointnumber=view.findViewById(R.id.pointsnumber_secound);
-        adView=view.findViewById(R.id.adView_secound);
         viewAddes=view.findViewById(R.id.cardviewAdds);
         adView = new AdView(getActivity());
         watchingvedio=view.findViewById(R.id.watchingvedio);
         cardadwebsite=view.findViewById(R.id.cardadwebsite);
+        progressBar = ProgressDialog.show(getContext(), "", getResources().getString(R.string.loading));
 
 
         webView = (WebView) view.findViewById(R.id.webView1);
-        webView.loadUrl("https://google.com");
+       // webView.loadUrl("https://google.com");
 
         // Enable Javascript
         WebSettings webSettings = webView.getSettings();
@@ -215,7 +205,19 @@ public class HomFragmentSecoundEdite  extends Fragment {
         MobileAds.initialize(getContext(), new OnInitializationCompleteListener() {
             @Override
             public void onInitializationComplete(InitializationStatus initializationStatus) {
-                AddesBanner( adView);
+
+            }
+        });
+
+        MobileAds.setRequestConfiguration(
+                new RequestConfiguration.Builder().setTestDeviceIds(Arrays.asList("ABCDEF012345")).build());
+
+        adContainerView = view.findViewById(R.id.ad_view_container);
+
+        adContainerView.post(new Runnable() {
+            @Override
+            public void run() {
+                loadBanner();
             }
         });
 
@@ -326,193 +328,6 @@ public class HomFragmentSecoundEdite  extends Fragment {
         return view;
     }
 
-/*
-    private void load_offerwalls() {
-
-        CustomRequest offerwallsRequest = new CustomRequest(Request.Method.POST, APP_OFFERWALLS, null,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-
-                        try {
-
-                            JSONObject Response = new JSONObject(App.getInstance().deData(response.toString()));
-
-                            if (!Response.getBoolean("error")) {
-
-                                JSONArray offerwalls = Response.getJSONArray("offerwalls");
-
-                                if (offerwalls.length() < 1) {
-
-                                    progressBarOfferwalls.setVisibility(View.GONE);
-                                    offerwalls_list.setVisibility(View.GONE);
-                                }
-
-                                for (int i = 0; i < offerwalls.length(); i++) {
-
-                                    JSONObject obj = offerwalls.getJSONObject(i);
-
-                                    OfferWalls singleOfferWall = new OfferWalls();
-
-                                    singleOfferWall.setOfferid(obj.getString("offer_id"));
-                                    singleOfferWall.setTitle(obj.getString("offer_title"));
-                                    singleOfferWall.setSubtitle(obj.getString("offer_subtitle"));
-                                    singleOfferWall.setImage(obj.getString("offer_thumbnail"));
-                                    singleOfferWall.setAmount(obj.getString("offer_points"));
-                                    singleOfferWall.setType(obj.getString("offer_type"));
-                                    singleOfferWall.setStatus(obj.getString("offer_status"));
-                                    singleOfferWall.setUrl(obj.getString("offer_url"));
-                                    singleOfferWall.setPartner("offerwalls");
-
-                                    if (obj.get("offer_status").equals("Active")) {
-                                        offerWalls.add(singleOfferWall);
-                                    }
-
-                                    if (obj.get("offer_type").equals("admantum")) {
-                                        offerWalls.remove(singleOfferWall);
-                                    }
-
-                                    progressBarOfferwalls.setVisibility(View.GONE);
-
-                                }
-                                offerWallsAdapter.notifyDataSetChanged();
-
-                            } else if (Response.getInt("error_code") == 699 || Response.getInt("error_code") == 999) {
-
-                                Dialogs.validationError(getContext(), Response.getInt("error_code"));
-
-                            } else {
-
-                                if (!DEBUG_MODE) {
-                                    Dialogs.serverError(getContext(), getResources().getString(R.string.ok), null);
-                                }
-                            }
-
-                        } catch (JSONException e) {
-                            if (!DEBUG_MODE) {
-                                Dialogs.serverError(getContext(), getResources().getString(R.string.ok), null);
-                            } else {
-                                Dialogs.errorDialog(getContext(), "Got Error", e.toString() + ", please contact developer immediately", true, false, "", "ok", null);
-                            }
-                        }
-
-                    }
-                }, new Response.ErrorListener() {
-
-            @Override
-            public void onErrorResponse(VolleyError error) {
-
-                if (DEBUG_MODE) {
-                    Dialogs.warningDialog(getContext(), "Got Error", error.toString(), true, false, "", "ok", null);
-                } else {
-
-
-                    progressBarOfferwalls.setVisibility(View.GONE);
-                    offerwalls_list.setVisibility(View.GONE);
-                }
-
-            }
-        });
-
-        App.getInstance().addToRequestQueue(offerwallsRequest);
-
-    }
-
-        private void load_admantum_api_offers(){
-
-            if(App.getInstance().get("ADMANTUM_GOT_RESPONSE", false))
-            {
-
-                try {
-
-                    JSONObject response_obj = new JSONObject(App.getInstance().get("ADMANTUM_RESPONSE", ""));
-                    parse_admantum_offers(response_obj);
-
-                } catch (Throwable t) {
-                    //do nothin
-                }
-
-            }
-            CustomRequest adMantumOffersRequest = new CustomRequest(Request.Method.POST, API_ADMANTUM, null, new Response.Listener<JSONObject>() {
-                        @Override
-                        public void onResponse(JSONObject response) {
-
-                            parse_admantum_offers(response);
-                            Log.d("TAG", "onResponse: "+response.toString());
-
-                        }}, new Response.ErrorListener() {
-
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    // do nothin
-                }}){
-                @Override
-                protected Map<String,String> getParams(){
-                    Map<String,String> params = new HashMap<>();
-                    params.put("country", App.getInstance().getCountryCode());
-                    params.put("uid", App.getInstance().getUsername());
-                    params.put("device", "android");
-                    return params;
-                }
-            };
-
-            App.getInstance().addToRequestQueue(adMantumOffersRequest);
-
-        }
-
-        private void parse_admantum_offers(JSONObject admantum_response){
-
-            try {
-
-                JSONArray alloffers = admantum_response.getJSONArray("offers");
-
-                for (int i = 0; i < alloffers.length(); i++) {
-
-                    JSONObject obj = alloffers.getJSONObject(i);
-
-                    String offerid = obj.getString("offer_id");
-                    String uniq_id = obj.getString("offer_id");
-                    String title = obj.getString("offer_title");
-                    String url = obj.getString("offer_link");
-                    String thumbnail = obj.getString("offer_image");
-                    String subtitle = obj.getString("offer_description");
-                    String partner = "admantum";
-
-                    String amount = obj.getString("offer_virtual_currency");
-                    String OriginalAmount = obj.getString("offer_virtual_currency");
-
-                    String bg_image = "";
-                    String instructions_title = "Offer Instructions : ";
-                    String instruction_one = "1. "+subtitle;
-                    String instruction_two = "2. Amount will be Credited within 24 hours after verification";
-                    String instruction_three = "3. Check history for progress";
-                    String instruction_four = "4. Skip those installed before ( unqualified won't get Rewarded )";
-
-                    Offers beanClassForRecyclerView_contacts = new Offers(thumbnail,title,amount,OriginalAmount,url,subtitle,partner,uniq_id,offerid,bg_image,instructions_title,instruction_one,instruction_two,instruction_three,instruction_four,false);
-                  //  offers.add(beanClassForRecyclerView_contacts);
-
-
-                    App.getInstance().store("ADMANTUM_GOT_RESPONSE", true);
-                    App.getInstance().store("ADMANTUM_RESPONSE", admantum_response);
-
-                }
-                offersAdapter.notifyDataSetChanged();
-                avLoadingIndicatorView.hide();
-
-            } catch (JSONException e) {
-                // do nothin
-            }
-
-        }
-
-*/
-
-    @Override
-    public void onResume() {
-        super.onResume();
-
-        // offersAdapter.notifyDataSetChanged();
-    }
 
     public void getdata()
     {
@@ -539,30 +354,6 @@ public class HomFragmentSecoundEdite  extends Fragment {
 
             }
         });
-//
-//        if(App.getInstance().get("API_OFFERS_ACTIVE",true)){
-//
-//            if(App.getInstance().get(AdMantumActive,true)){
-//                appViewModelKotlin.getAllOfferApi().observe(getViewLifecycleOwner(), new Observer<ArrayList<Offers>>() {
-//                    @Override
-//                    public void onChanged(ArrayList<Offers> offers) {
-//                        offersAdapter = new OffersAdapter(getActivity(),offers);
-//                        RecyclerView.LayoutManager offersLayoutmanager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
-//                        offers_list.setLayoutManager(offersLayoutmanager);
-//                        offers_list.setItemAnimator(new DefaultItemAnimator());
-//                        offers_list.setAdapter(offersAdapter);
-//                        avLoadingIndicatorView.setVisibility(View.GONE);
-//                    }
-//                });
-//
-//            }
-//
-//        }
-//        if (!App.getInstance().get("API_OFFERS_ACTIVE", true)) {
-//
-//            progressBarOfferwalls.setVisibility(View.GONE);
-//
-//        }
 
     }
 
@@ -579,52 +370,6 @@ public class HomFragmentSecoundEdite  extends Fragment {
         }, 1000);
     }
 
-    public void AddesBanner(AdView adView)
-    {
-
-        adView.setAdSize(AdSize.BANNER);
-        adView.setAdUnitId(sp.getString("banner_ad_unit_id", "ca-app-pub-3940256099942544/6300978111"));
-        //adView.setAdUnitId( "ca-app-pub-3940256099942544/6300978111");
-        AdRequest adRequest = new AdRequest.Builder().build();
-        adView.loadAd(adRequest);
-
-        adView.setAdListener(new AdListener() {
-            @Override
-            public void onAdLoaded() {
-                // Code to be executed when an ad finishes loading.
-                Log.d("TAG2", "onAdLoaded: ");
-            }
-
-            @Override
-            public void onAdFailedToLoad(LoadAdError adError) {
-                // Code to be executed when an ad request fails.
-                Log.d("TAG", "onAdFailedToLoad: ");
-            }
-
-            @Override
-            public void onAdOpened() {
-                // Code to be executed when an ad opens an overlay that
-                // covers the screen.
-                Log.d("TAG", "onAdOpened: ");
-            }
-
-            @Override
-            public void onAdClicked() {
-                // Code to be executed when the user clicks on an ad.
-                Log.d("TAG", "onAdClicked: ");
-            }
-
-            @Override
-            public void onAdClosed() {
-                // Code to be executed when the user is about to return
-                // to the app after tapping on an ad.
-                Log.d("TAG", "onAdClosed: ");
-            }
-        });
-
-
-
-    }
 
 
     @SuppressLint("SetJavaScriptEnabled")
@@ -633,14 +378,80 @@ public class HomFragmentSecoundEdite  extends Fragment {
         super.onStart();
         appViewModelKotlin =new AppViewModelKotlin();
 
-        loadRewardedAd();
+
 
         getdata();
 
-        init_admob();
 
 
     }
+
+
+    @Override
+    public void onPause() {
+        if (adView != null) {
+            adView.pause();
+        }
+        super.onPause();
+    }
+
+    /** Called when returning to the activity */
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (adView != null) {
+            adView.resume();
+        }
+    }
+
+    /** Called before the activity is destroyed */
+    @Override
+    public void onDestroy() {
+        if (adView != null) {
+            adView.destroy();
+        }
+        super.onDestroy();
+    }
+
+
+    private void loadBanner() {
+        // Create an ad request.
+        adView = new AdView(getContext());
+        adView.setAdUnitId("ca-app-pub-3940256099942544/9214589741");
+        adContainerView.removeAllViews();
+        adContainerView.addView(adView);
+
+        AdSize adSize = getAdSize();
+        adView.setAdSize(adSize);
+
+        AdRequest adRequest = new AdRequest.Builder().build();
+
+        // Start loading the ad in the background.
+        adView.loadAd(adRequest);
+    }
+
+
+
+    private AdSize getAdSize() {
+        // Determine the screen width (less decorations) to use for the ad width.
+        Display display = getActivity().getWindowManager().getDefaultDisplay();
+        DisplayMetrics outMetrics = new DisplayMetrics();
+        display.getMetrics(outMetrics);
+
+        float density = outMetrics.density;
+
+        float adWidthPixels = adContainerView.getWidth();
+
+        // If the ad hasn't been laid out, default to the full screen width.
+        if (adWidthPixels == 0) {
+            adWidthPixels = outMetrics.widthPixels;
+        }
+
+        int adWidth = (int) (adWidthPixels / density);
+        return AdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(getContext(), adWidth);
+    }
+
+
 
     protected void initpDialog() {
 
@@ -771,23 +582,7 @@ public class HomFragmentSecoundEdite  extends Fragment {
 
 
 
-    @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
 
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-
-    }
     private void loadRewardedAd() {
 
         AdRequest adRequest = new AdRequest.Builder().build();
@@ -911,8 +706,8 @@ public class HomFragmentSecoundEdite  extends Fragment {
             }
         });
 
-//getActivity(), sp.getString("interstitial_ad_unit_id","ca-app-pub-3940256099942544/1033173712")
-        InterstitialAd.load(getActivity(), "ca-app-pub-3940256099942544/1033173712", adRequest,
+//
+        InterstitialAd.load(getActivity(),  sp.getString("interstitial_ad_unit_id","ca-app-pub-3940256099942544/1033173712"), adRequest,
                 new InterstitialAdLoadCallback() {
                     @Override
                     public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
@@ -957,10 +752,28 @@ public class HomFragmentSecoundEdite  extends Fragment {
     }
 
 
+    public void setDesktopMode(WebView webView1, boolean enabled){
+        String newUserAgent = webView1.getSettings().getUserAgentString();
+        if(enabled){
+            try{
+                String ua = webView1.getSettings().getUserAgentString();
+                String androidOSString = webView1.getSettings().getUserAgentString().substring(ua.indexOf("("), ua.indexOf(")") + 1);
+                newUserAgent = webView1.getSettings().getUserAgentString().replace(androidOSString, "(X11; Linux x86_64)");
+            } catch (Exception e){
+                e.printStackTrace();
+            }
+        } else {
+            newUserAgent = null;
+        }
 
+        webView1.getSettings().setUserAgentString(newUserAgent);
+        webView1.getSettings().setUseWideViewPort(enabled);
+        webView1.getSettings().setLoadWithOverviewMode(enabled);
+        // webView.reload();
+    }
     public void openOfferWall(String Title, String SubTitle, String Type, String URL){
-
         switch (Type) {
+
 
             case "checkin":
 
@@ -1036,9 +849,45 @@ public class HomFragmentSecoundEdite  extends Fragment {
         String OfferWall_Url = "https://admantum.com/offers/?appid="+App.getInstance().get(AdMantumAppId,"")+"&uid="+App.getInstance().getUsername();
 
         if(App.getInstance().get(AdMantumActive,true)){
+            webView.loadUrl(null);
+            webView.clearCache(true);
+            setDesktopMode(webView, true);
+            webView.setWebViewClient(new WebViewClient() {
+                public boolean shouldOverrideUrlLoading(WebView view, String url) {
 
+                    if (url != null) {
 
-            webView.loadUrl(OfferWall_Url);
+                        AppUtils.parse(getContext(),url);
+
+                        return true;
+
+                    } else {
+
+                        return false;
+                    }
+                }
+
+                public void onPageFinished(WebView view, String url) {
+                    if (progressBar.isShowing()) {
+                        progressBar.dismiss();
+                        webView.loadUrl(OfferWall_Url);
+
+                    }
+                }
+
+                public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
+
+                    Dialogs.serverError(getContext(), getResources().getString(R.string.ok), new SweetAlertDialog.OnSweetClickListener() {
+                        @Override
+                        public void onClick(SweetAlertDialog sweetAlertDialog) {
+
+                            //  finish();
+                        }
+                    });
+
+                }
+            });
+
 
 
 
@@ -1056,6 +905,42 @@ public class HomFragmentSecoundEdite  extends Fragment {
     public void openOfferDaddyOfferWall(){
 
         String OfferWall_Url = "https://www.offerdaddy.com/wall/"+App.getInstance().get(OfferDaddy_AppId,"")+"/"+App.getInstance().getUsername()+"/";
+        webView.loadUrl(null);
+        webView.clearCache(true);
+        setDesktopMode(webView, true);
+        webView.setWebViewClient(new WebViewClient() {
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+
+                if (url != null) {
+
+                    AppUtils.parse(getContext(),url);
+
+                    return true;
+
+                } else {
+
+                    return false;
+                }
+            }
+
+            public void onPageFinished(WebView view, String url) {
+                if (progressBar.isShowing()) {
+                    progressBar.dismiss();
+                }
+            }
+
+            public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
+
+                Dialogs.serverError(getContext(), getResources().getString(R.string.ok), new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog sweetAlertDialog) {
+
+                        //  finish();
+                    }
+                });
+
+            }
+        });
 
         webView.loadUrl(OfferWall_Url);
 
@@ -1068,8 +953,45 @@ public class HomFragmentSecoundEdite  extends Fragment {
     public void openKiwiWallOfferWall(){
 
         String OfferWall_Url = "https://www.kiwiwall.com/wall/"+App.getInstance().get(KiwiWallWallId,"")+"/"+App.getInstance().getUsername();
+        webView.loadUrl(null);
+        webView.clearCache(true);
+        setDesktopMode(webView, true);
+        webView.setWebViewClient(new WebViewClient() {
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
 
-        webView.loadUrl(OfferWall_Url);
+                if (url != null) {
+
+                    AppUtils.parse(getContext(),url);
+
+                    return true;
+
+                } else {
+
+                    return false;
+                }
+            }
+
+            public void onPageFinished(WebView view, String url) {
+                if (progressBar.isShowing()) {
+                    progressBar.dismiss();
+                    webView.loadUrl(OfferWall_Url);
+
+                }
+            }
+
+            public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
+
+                Dialogs.serverError(getContext(), getResources().getString(R.string.ok), new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog sweetAlertDialog) {
+
+                        //  finish();
+                    }
+                });
+
+            }
+        });
+
 
 //        Intent wallActivity = new Intent(getContext(), WallActivity.class);
 //        wallActivity.putExtra(Constants.OFFER_WALL_URL,OfferWall_Url);
@@ -1084,7 +1006,42 @@ public class HomFragmentSecoundEdite  extends Fragment {
             String OfferWall_Url = url.replace("{user_id}", App.getInstance().getUsername());
 
 
+            webView.loadUrl(null);
+            webView.clearCache(true);
+            setDesktopMode(webView, true);
+            webView.setWebViewClient(new WebViewClient() {
+                public boolean shouldOverrideUrlLoading(WebView view, String url) {
 
+                    if (url != null) {
+
+                        AppUtils.parse(getContext(),url);
+
+                        return true;
+
+                    } else {
+
+                        return false;
+                    }
+                }
+
+                public void onPageFinished(WebView view, String url) {
+                    if (progressBar.isShowing()) {
+                        progressBar.dismiss();
+                    }
+                }
+
+                public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
+
+                    Dialogs.serverError(getContext(), getResources().getString(R.string.ok), new SweetAlertDialog.OnSweetClickListener() {
+                        @Override
+                        public void onClick(SweetAlertDialog sweetAlertDialog) {
+
+                            //  finish();
+                        }
+                    });
+
+                }
+            });
 
             webView.loadUrl(OfferWall_Url);
 
@@ -1101,6 +1058,42 @@ public class HomFragmentSecoundEdite  extends Fragment {
         String OfferWall_Url = App.getInstance().get("CpaLead_DirectLink","")+"&subid="+App.getInstance().getUsername()+"&subid2="+App.getInstance().getUsername();
 
         if(App.getInstance().get("CpaLeadActive",true)){
+            webView.loadUrl(null);
+            webView.clearCache(true);
+            setDesktopMode(webView, true);
+            webView.setWebViewClient(new WebViewClient() {
+                public boolean shouldOverrideUrlLoading(WebView view, String url) {
+
+                    if (url != null) {
+
+                        AppUtils.parse(getContext(),url);
+
+                        return true;
+
+                    } else {
+
+                        return false;
+                    }
+                }
+
+                public void onPageFinished(WebView view, String url) {
+                    if (progressBar.isShowing()) {
+                        progressBar.dismiss();
+                    }
+                }
+
+                public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
+
+                    Dialogs.serverError(getContext(), getResources().getString(R.string.ok), new SweetAlertDialog.OnSweetClickListener() {
+                        @Override
+                        public void onClick(SweetAlertDialog sweetAlertDialog) {
+
+                            //  finish();
+                        }
+                    });
+
+                }
+            });
 
             webView.loadUrl(OfferWall_Url);
 
@@ -1120,7 +1113,42 @@ public class HomFragmentSecoundEdite  extends Fragment {
 
         if(App.getInstance().get("WannadsActive",true)){
 
+            webView.loadUrl(null);
+            webView.clearCache(true);
+            setDesktopMode(webView, true);
+            webView.setWebViewClient(new WebViewClient() {
+                public boolean shouldOverrideUrlLoading(WebView view, String url) {
 
+                    if (url != null) {
+
+                        AppUtils.parse(getContext(),url);
+
+                        return true;
+
+                    } else {
+
+                        return false;
+                    }
+                }
+
+                public void onPageFinished(WebView view, String url) {
+                    if (progressBar.isShowing()) {
+                        progressBar.dismiss();
+                    }
+                }
+
+                public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
+
+                    Dialogs.serverError(getContext(), getResources().getString(R.string.ok), new SweetAlertDialog.OnSweetClickListener() {
+                        @Override
+                        public void onClick(SweetAlertDialog sweetAlertDialog) {
+
+                            //  finish();
+                        }
+                    });
+
+                }
+            });
 
             webView.loadUrl(OfferWall_Url);
 
@@ -1140,7 +1168,42 @@ public class HomFragmentSecoundEdite  extends Fragment {
         String OfferWall_Url = "https://asmwall.com/adwall/publisher/"+App.getInstance().get("AdScendMedia_PubId", "")+"/profile/"+App.getInstance().get("AdScendMedia_AdwallId", "")+"?subid1="+App.getInstance().getUsername();
 
         if(App.getInstance().get("AdScendMediaActive",true)){
+            webView.loadUrl(null);
+            webView.clearCache(true);
+            setDesktopMode(webView, true);
+            webView.setWebViewClient(new WebViewClient() {
+                public boolean shouldOverrideUrlLoading(WebView view, String url) {
 
+                    if (url != null) {
+
+                        AppUtils.parse(getContext(),url);
+
+                        return true;
+
+                    } else {
+
+                        return false;
+                    }
+                }
+
+                public void onPageFinished(WebView view, String url) {
+                    if (progressBar.isShowing()) {
+                        progressBar.dismiss();
+                    }
+                }
+
+                public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
+
+                    Dialogs.serverError(getContext(), getResources().getString(R.string.ok), new SweetAlertDialog.OnSweetClickListener() {
+                        @Override
+                        public void onClick(SweetAlertDialog sweetAlertDialog) {
+
+                            //  finish();
+                        }
+                    });
+
+                }
+            });
 
             webView.loadUrl(OfferWall_Url);
 //            Intent wallActivity = new Intent(getContext(), WallActivity.class);

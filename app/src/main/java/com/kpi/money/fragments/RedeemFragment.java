@@ -2,7 +2,9 @@ package com.kpi.money.fragments;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +21,15 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.bumptech.glide.Glide;
+import com.google.android.gms.ads.AdError;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.FullScreenContentCallback;
+import com.google.android.gms.ads.LoadAdError;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.initialization.InitializationStatus;
+import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
+import com.google.android.gms.ads.interstitial.InterstitialAd;
+import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
 import com.kpi.money.R;
 import com.kpi.money.activities.FragmentsActivity;
 import com.kpi.money.adapters.PayoutsAdapter;
@@ -44,9 +55,10 @@ public class RedeemFragment extends Fragment {
     PayoutsAdapter payoutsAdapter;
     ArrayList<Payouts> allpayouts;
     Context ctx;
+    SharedPreferences sp;
     TextView textViewname,points;
     AVLoadingIndicatorView avLoadingIndicatorView;
-ImageView cupimage;
+    ImageView cupimage;
     public RedeemFragment() {
         // Required empty public constructor
     }
@@ -81,6 +93,13 @@ ImageView cupimage;
         payouts.setAdapter(payoutsAdapter);
         textViewname.setText(App.getInstance().getFullname());
         points.setText(App.getInstance().getBalance());
+        sp = getContext().getSharedPreferences("PREFS_GAME", Context.MODE_PRIVATE);
+
+        MobileAds.initialize(getContext(), new OnInitializationCompleteListener() {
+            @Override
+            public void onInitializationComplete(InitializationStatus initializationStatus) {
+            }
+        });
 
 
         CustomRequest transactionsRequest = new CustomRequest(Request.Method.POST, APP_PAYOUTS,null,
@@ -174,7 +193,7 @@ ImageView cupimage;
             }});
 
         App.getInstance().addToRequestQueue(transactionsRequest);
-
+        init_admob();
         return view;
     }
 
@@ -220,6 +239,62 @@ ImageView cupimage;
             FragmentsActivity show = (FragmentsActivity) close;
             show.closeActivity();
         }
+
+    }
+    void init_admob(){
+
+
+
+        AdRequest adRequest = new AdRequest.Builder().build();
+        MobileAds.initialize(getContext(), new OnInitializationCompleteListener() {
+            @Override
+            public void onInitializationComplete(InitializationStatus initializationStatus) {
+
+            }
+        });
+
+//
+        InterstitialAd.load(getActivity(),  sp.getString("interstitial_ad_unit_id","ca-app-pub-3940256099942544/1033173712"), adRequest,
+                new InterstitialAdLoadCallback() {
+                    @Override
+                    public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
+                        // The mInterstitialAd reference will be null until
+                        // an ad is loaded.
+                        Log.i("Loaded", "onAdLoaded");
+                        // displayInterstitialAd();
+                        interstitialAd.show(getActivity());
+                        interstitialAd.setFullScreenContentCallback(new FullScreenContentCallback() {
+                            @Override
+                            public void onAdFailedToShowFullScreenContent(AdError adError) {
+                                // Called when fullscreen content failed to show.
+                                super.onAdFailedToShowFullScreenContent(adError);
+                                Log.d("TAG", "The ad failed to show.");
+                            }
+
+                            @Override
+                            public void onAdDismissedFullScreenContent() {
+                                // Called when fullscreen content is dismissed.
+                                super.onAdDismissedFullScreenContent();
+                                Log.d("TAG", "The ad was dismissed.");
+                            }
+
+                            @Override
+                            public void onAdShowedFullScreenContent() {
+                                // Called when fullscreen content is shown.
+                                // Make sure to set your reference to null so you don't
+                                // show it a second time.
+                                super.onAdShowedFullScreenContent();
+                                Log.d("TAG", "The ad was shown.");
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+                        // Handle the error
+                        Log.i("FailedError", loadAdError.getMessage());
+                    }
+                });
 
     }
 

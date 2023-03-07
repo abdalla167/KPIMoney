@@ -1,13 +1,19 @@
 package com.kpi.money.viewmodels
 
+import android.content.Intent
 import android.util.Log
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat.startActivity
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.android.volley.Request
 import com.android.volley.Response
+import com.facebook.FacebookSdk.getApplicationContext
 import com.kpi.money.activities.AccountActvity
 import com.kpi.money.activities.ActivityBase
+import com.kpi.money.activities.AppActivity
+import com.kpi.money.activities.MainActivityvTwo
 import com.kpi.money.app.App
 import com.kpi.money.constants.Constants
 import com.kpi.money.model.OfferWalls
@@ -16,18 +22,74 @@ import com.kpi.money.model.point_ads.AdsSetting
 import com.kpi.money.model.point_ads.GetTimes
 import com.kpi.money.model.point_ads.GetpointAd
 import com.kpi.money.model.point_ads.UploadpointParmater
+import com.kpi.money.utils.AppUtils
 import com.kpi.money.utils.CustomRequest
+import com.kpi.money.utils.Dialogs
 import com.kpi.money.utils.RetrofitClint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import org.json.JSONException
 import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 
 class AppViewModelKotlin() : ViewModel() {
+
+
+
+
+
+
+    fun checkAccountStat(appActivity: AppActivity):MutableLiveData< String>
+    {
+
+        val s=MutableLiveData<String>()
+
+        viewModelScope.launch (Dispatchers.IO) {
+
+
+
+
+
+
+        //   String s=  sp.getString("admob_appId","ca-app-pub-3940256099942544/3419835294");
+        val jsonReq: CustomRequest = object : CustomRequest(
+            Method.POST, Constants.METHOD_ACCOUNT_AUTHORIZE, null,
+            Response.Listener { response ->
+                if (App.getInstance().authorize(response)) {
+                    if (App.getInstance().state == Constants.ACCOUNT_STATE_ENABLED) {
+                    s.postValue("1")
+                    }
+                    else
+                    {
+                        s.postValue("2")
+                    }
+                }
+
+                else if (App.getInstance().errorCode == 699 || App.getInstance().errorCode == 999) {
+
+                    s.postValue("3")
+                } else if (App.getInstance().errorCode == 799) {
+
+                    s.postValue("4")
+                } else {
+                    s.postValue("5")
+                }
+            },
+            Response.ErrorListener {    s.postValue("6")}) {
+            override fun getParams(): Map<String, String> {
+                val params: MutableMap<String, String> = java.util.HashMap()
+                params["data"] = App.getInstance().authorize
+                return params
+            }
+        }
+
+        App.getInstance().addToRequestQueue(jsonReq)
+        }
+return s
+    }
+
 
 
 

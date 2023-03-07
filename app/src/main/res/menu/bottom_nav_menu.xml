@@ -7,11 +7,11 @@
         android:icon="@drawable/ic_home_black_24dp"
         android:title="@string/title_home"
         />
-    <item
-        android:id="@+id/navigation_offer_api"
-        android:icon="@drawable/iconeofferapi"
-        android:title="@string/api_offers"
-        />
+<!--    <item-->
+<!--        android:id="@+id/navigation_offer_api"-->
+<!--        android:icon="@drawable/iconeofferapi"-->
+<!--        android:title="@string/api_offers"-->
+<!--        />-->
 
 
     <item

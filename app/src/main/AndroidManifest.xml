@@ -12,9 +12,18 @@
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
     <uses-permission android:name="android.permission.POST_NOTIFICATION" />
+    <uses-permission android:name="android.permission.BATTERY_STATS"
+        tools:ignore="ProtectedPermissions" />
     <uses-permission android:name="android.permission.ACCESS_NOTIFICATION_POLICY" />
+    <uses-permission android:name="android.permission.ACTION_MANAGE_OVERLAY_PERMISSION" />
     <uses-permission android:name="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE"
         tools:ignore="ProtectedPermissions" />
+    <uses-permission
+        android:name="android.permission.WRITE_SETTINGS"
+        tools:ignore="ProtectedPermissions" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
+
+
 
     <permission
         android:name=".permission.C2D_MESSAGE"
@@ -58,6 +67,10 @@
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             tools:node="merge" />
+        <activity
+            android:name=".mony.CustomeDailog"
+            android:noHistory="true"
+            android:theme="@android:style/Theme.Dialog" />
         <activity
             android:name=".activities.RecoveryActivity"
             android:configChanges="keyboardHidden|orientation"
@@ -152,6 +165,22 @@
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
+
+        <receiver
+            android:name=".receiver.BatteryStatusReceiver"
+            android:exported="false">
+            <intent-filter>
+
+                <action android:name="android.intent.action.ACTION_POWER_DISCONNECTED"/>
+                <action android:name="android.intent.action.ACTION_POWER_CONNECTED" />
+                <action android:name="com.app.action.alarmmanager" />
+            </intent-filter>
+        </receiver>
+
+        <service
+            android:name=".service.BatteryService"
+            android:exported="true" />
+
 
         <activity
             android:name="com.facebook.FacebookActivity"

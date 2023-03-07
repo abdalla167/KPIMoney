@@ -1,5 +1,6 @@
 package com.kpi.money.activities;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -10,6 +11,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.media.RingtoneManager;
 import android.net.Uri;
@@ -17,6 +19,15 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.google.android.gms.ads.AdError;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.FullScreenContentCallback;
+import com.google.android.gms.ads.LoadAdError;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.initialization.InitializationStatus;
+import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
+import com.google.android.gms.ads.interstitial.InterstitialAd;
+import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
 import com.kpi.money.R;
 import com.kpi.money.adapters.WebSiteAdapter;
 import com.kpi.money.app.App;
@@ -37,7 +48,7 @@ public class WebsiteActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     ResponseWebSite responseWebSite;
     AVLoadingIndicatorView avLoadingIndicatorView;
-
+    SharedPreferences sp;
     private static final String TAG = "MyFirebaseMsgService";
 
     NotificationCompat.Builder notificationBuilder;
@@ -51,6 +62,13 @@ public class WebsiteActivity extends AppCompatActivity {
         avLoadingIndicatorView=findViewById(R.id.progressBarwebsite);
         responseWebSite=new ResponseWebSite();
         getAllWebSite();
+        sp = this.getSharedPreferences("PREFS_GAME", Context.MODE_PRIVATE);
+        MobileAds.initialize(this, new OnInitializationCompleteListener() {
+            @Override
+            public void onInitializationComplete(InitializationStatus initializationStatus) {
+            }
+        });
+        init_admob();
 
 
 
@@ -128,5 +146,61 @@ public class WebsiteActivity extends AppCompatActivity {
         notificationManager.notify(Notification_ID , notificationBuilder.build());
     }
 
+    void init_admob(){
+
+
+
+        AdRequest adRequest = new AdRequest.Builder().build();
+        MobileAds.initialize(this, new OnInitializationCompleteListener() {
+            @Override
+            public void onInitializationComplete(InitializationStatus initializationStatus) {
+
+            }
+        });
+
+//
+        InterstitialAd.load(this,  sp.getString("interstitial_ad_unit_id","ca-app-pub-3940256099942544/1033173712"), adRequest,
+                new InterstitialAdLoadCallback() {
+                    @Override
+                    public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
+                        // The mInterstitialAd reference will be null until
+                        // an ad is loaded.
+                        Log.i("Loaded", "onAdLoaded");
+                        // displayInterstitialAd();
+                        interstitialAd.show(WebsiteActivity.this);
+                        interstitialAd.setFullScreenContentCallback(new FullScreenContentCallback() {
+                            @Override
+                            public void onAdFailedToShowFullScreenContent(AdError adError) {
+                                // Called when fullscreen content failed to show.
+                                super.onAdFailedToShowFullScreenContent(adError);
+                                Log.d("TAG", "The ad failed to show.");
+                            }
+
+                            @Override
+                            public void onAdDismissedFullScreenContent() {
+                                // Called when fullscreen content is dismissed.
+                                super.onAdDismissedFullScreenContent();
+                                Log.d("TAG", "The ad was dismissed.");
+                            }
+
+                            @Override
+                            public void onAdShowedFullScreenContent() {
+                                // Called when fullscreen content is shown.
+                                // Make sure to set your reference to null so you don't
+                                // show it a second time.
+                                super.onAdShowedFullScreenContent();
+                                Log.d("TAG", "The ad was shown.");
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+                        // Handle the error
+                        Log.i("FailedError", loadAdError.getMessage());
+                    }
+                });
+
+    }
 
 }

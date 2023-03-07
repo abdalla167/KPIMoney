@@ -4,9 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/KPIMoney.iml" filepath="$PROJECT_DIR$/.idea/modules/KPIMoney.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/KPIMoney.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/KPIMoney.app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/KPIMoney.app.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/KPIMoney.app.androidTest.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/KPIMoney.app.main.iml" filepath="$PROJECT_DIR$/.idea/modules/app/KPIMoney.app.main.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/KPIMoney.app.unitTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/KPIMoney.app.unitTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/nativetemplates/KPIMoney.nativetemplates.iml" filepath="$PROJECT_DIR$/.idea/modules/nativetemplates/KPIMoney.nativetemplates.iml" />
     </modules>
   </component>
 </project>

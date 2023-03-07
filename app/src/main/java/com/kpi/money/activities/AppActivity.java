@@ -1,19 +1,31 @@
 package com.kpi.money.activities;
 
+import android.app.AlertDialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.Observer;
 
@@ -24,11 +36,14 @@ import com.android.volley.VolleyError;
 
 import org.json.JSONObject;
 
+import java.util.Locale;
 import java.util.Map;
 
 import com.kpi.money.R;
 import com.kpi.money.app.App;
 import com.kpi.money.model.point_ads.AdsSetting;
+import com.kpi.money.receiver.BatteryStatusReceiver;
+import com.kpi.money.service.BatteryService;
 import com.kpi.money.utils.AppUtils;
 import com.kpi.money.utils.CustomRequest;
 import com.kpi.money.utils.Dialogs;
@@ -57,8 +72,7 @@ public class AppActivity extends ActivityBase {
     RelativeLayout loadingScreen;
     LinearLayout contentScreen;
     CompositeDisposable compositeDisposable = new CompositeDisposable();
-
-
+    BroadcastReceiver batteryLevelReceiver;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,6 +80,21 @@ public class AppActivity extends ActivityBase {
 
         contentScreen = (LinearLayout) findViewById(R.id.contentScreen);
         loadingScreen = (RelativeLayout) findViewById(R.id.loadingScreen);
+
+
+        Intent intent = new Intent(this, BatteryService.class);
+//        IntentFilter intentFilter = new IntentFilter();
+//        intentFilter.addAction(BatteryService.ACTION_BATTERY_DISCONECT_FAST_CHARGE);
+//        intentFilter.addAction(BatteryService.ACTION_BATTERY_CONNECT_FAST_CHARGE);
+//        BatteryStatusReceiver batteryStatusReceiver=new BatteryStatusReceiver();
+//        registerReceiver(batteryStatusReceiver,intentFilter);
+        if (Build.VERSION.SDK_INT >= 26) {
+            ContextCompat.startForegroundService(this, intent);
+        } else {
+            startService(intent);
+
+        }
+
 
         if (App.getInstance().get("isFirstTimeLaunch",true)) {
 
@@ -103,6 +132,8 @@ public class AppActivity extends ActivityBase {
     protected void onStart() {
 
         super.onStart();
+        checkAlertPermission();
+        showLoadingScreen();
 
         if(!App.getInstance().isConnected()) {
 
@@ -119,10 +150,6 @@ public class AppActivity extends ActivityBase {
         else if(App.getInstance().getId() != 0) {
 
             showLoadingScreen();
-
-
-
-
             AppViewModelKotlin appViewModelKotlin=new AppViewModelKotlin();
             appViewModelKotlin.getPoinWatchingAdd();
 
@@ -132,7 +159,6 @@ public class AppActivity extends ActivityBase {
                 public void onChanged(AdsSetting adsSetting) {
                     SharedPreferences sp = getSharedPreferences("PREFS_GAME" , Context.MODE_PRIVATE);
                     SharedPreferences.Editor editor = sp.edit();
-
 
                     //google
                     editor.putString("admob_appId", adsSetting.getData().get(0).getAdmob_app_id().toString().trim());
@@ -147,19 +173,16 @@ public class AppActivity extends ActivityBase {
                     editor.putString("fa_reward_id",adsSetting.getData().get(0).getFacebook_rads_p_id().toString().trim());
                     editor.commit();
 
-                    Log.d(TAG, "onChanged: "+adsSetting.getData().get(0).getAdmob_bads_id());
+
+
                     try {
                         ApplicationInfo ai = getPackageManager().getApplicationInfo(getPackageName(), PackageManager.GET_META_DATA);
                         Bundle bundle = ai.metaData;
                         String myApiKey = bundle.getString("com.google.android.gms.ads.APPLICATION_ID");
-                        Log.d(TAG, "Name Found: " + myApiKey);
                         ai.metaData.putString("com.google.android.gms.ads.APPLICATION_ID",sp.getString("admob_appId","ca-app-pub-3940256099942544/3419835294"));//you can replace your key APPLICATION_ID here
                         String ApiKey = bundle.getString("com.google.android.gms.ads.APPLICATION_ID");
-                        Log.d(TAG, "ReNamed Found: " + ApiKey);
                     } catch (PackageManager.NameNotFoundException e) {
-                        Log.e(TAG, "Failed to load meta-data, NameNotFound: " + e.getMessage());
                     } catch (NullPointerException e) {
-                        Log.e(TAG, "Failed to load meta-data, NullPointer: " + e.getMessage());
                     }
 
 
@@ -170,66 +193,51 @@ public class AppActivity extends ActivityBase {
 
             //   String s=  sp.getString("admob_appId","ca-app-pub-3940256099942544/3419835294");
 
+           appViewModelKotlin.checkAccountStat(this).observe(this, new Observer<String>() {
+             @Override
+             public void onChanged(String s) {
+                 if("1".equals(s))
+                 {
+                     // AppInit();
+                     ActivityCompat.finishAffinity(AppActivity.this);
+                     Intent i = new Intent(getApplicationContext(), MainActivityvTwo.class);
+                     startActivity(i);
+                 }
+                 else if ("2".equals(s))
+                 {
+                     showContentScreen();
+                     App.getInstance().logout();
+                 }
+                 else if ("3".equals(s))
+                 {
+                     Dialogs.validationError(AppActivity.this,App.getInstance().getErrorCode());
 
-            CustomRequest jsonReq = new CustomRequest(Request.Method.POST, METHOD_ACCOUNT_AUTHORIZE, null, new Response.Listener<JSONObject>() {
-                @Override
-                public void onResponse(JSONObject response) {
+                 }
+                 else if ("4".equals(s))
+                 {
+                     Dialogs.warningDialog(AppActivity.this, getResources().getString(R.string.update_app), getResources().getString(R.string.update_app_description), false, false, "", getResources().getString(R.string.update), new SweetAlertDialog.OnSweetClickListener() {
+                         @Override
+                         public void onClick(SweetAlertDialog sweetAlertDialog) {
+                             AppUtils.gotoMarket(AppActivity.this);
+                         }
+                     });
+                 }
+                 else if ("5".equals(s))
+                 {
 
-                    if (App.getInstance().authorize(response))
-                    {
+                     showContentScreen();
+                 }
+                 else if ("6".equals(s))
+                 {
 
-                        if (App.getInstance().getState() == ACCOUNT_STATE_ENABLED)
-                        {
+                     showContentScreen();
+                 }
 
-                            // AppInit();
-                            ActivityCompat.finishAffinity(AppActivity.this);
-                            Intent i = new Intent(getApplicationContext(), MainActivityvTwo.class);
-                            startActivity(i);
 
-                        }
-                        else
-                        {
-                            showContentScreen();
-                            App.getInstance().logout();
-                        }
+             }
+         });
 
-                    } else if(App.getInstance().getErrorCode() == 699 || App.getInstance().getErrorCode() == 999){
 
-                        Dialogs.validationError(AppActivity.this,App.getInstance().getErrorCode());
-
-                    } else if(App.getInstance().getErrorCode() == 799){
-
-                        Dialogs.warningDialog(AppActivity.this, getResources().getString(R.string.update_app), getResources().getString(R.string.update_app_description), false, false, "", getResources().getString(R.string.update), new SweetAlertDialog.OnSweetClickListener() {
-                            @Override
-                            public void onClick(SweetAlertDialog sweetAlertDialog) {
-                                AppUtils.gotoMarket(AppActivity.this);
-                            }
-                        });
-
-                    } else {
-
-                        showContentScreen();
-                    }
-                }
-            }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-
-                    showContentScreen();
-                }
-            })
-            {
-
-                @Override
-                protected Map<String, String> getParams() {
-                    Map<String, String> params = new HashMap<String, String>();
-                    params.put("data", App.getInstance().getAuthorize());
-
-                    return params;
-                }
-            };
-
-            App.getInstance().addToRequestQueue(jsonReq);
 
         }
         else {
@@ -274,4 +282,78 @@ public class AppActivity extends ActivityBase {
     }
 
 
+
+    private void checkAlertPermission(){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (!Settings.System.canWrite(getApplicationContext())) {
+                Intent intent = new Intent(Settings.ACTION_MANAGE_WRITE_SETTINGS, Uri.parse("package:" + getPackageName()));
+                startActivityForResult(intent, 200);
+
+            }
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+
+
+
+            if (!Settings.canDrawOverlays(this)) {
+
+                Intent intent2 = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:" + this.getPackageName()));
+                startActivityForResult(intent2, 100);
+
+                if ("xiaomi".equals(Build.MANUFACTURER.toLowerCase(Locale.ROOT))) {
+                    final Intent intent = new Intent("miui.intent.action.APP_PERM_EDITOR");
+                    intent.setClassName("com.miui.securitycenter",
+                            "com.miui.permcenter.permissions.PermissionsEditorActivity");
+                    intent.putExtra("extra_pkgname", getPackageName());
+                    new AlertDialog.Builder(this)
+                            .setTitle("Please Enable the additional permissions")
+                            .setMessage("You will not receive all featueres while the app is in background if you disable these permissions")
+                            .setPositiveButton("Go to Settings", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    startActivity(intent);
+                                }
+                            })
+                            .setIcon(android.R.drawable.ic_dialog_info)
+                            .setCancelable(false)
+                            .show();
+                }
+                else {
+                    Intent overlaySettings = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:" + getPackageName()));
+                    startActivityForResult(overlaySettings, 100);
+                }
+            }
+
+
+        }
+
+
+
+//        if (!FilePermissionUtility.alertPermissionIsAllowed(this))
+//            FilePermissionUtility.checkAlertPermission(this,mGetContent);
+//
+
+
+    }
+
+
+
+    ActivityResultLauncher<String> mGetContent = registerForActivityResult(
+            new ActivityResultContracts.RequestPermission(),
+            new ActivityResultCallback<Boolean>() {
+
+                @Override
+                public void onActivityResult(Boolean result) {
+                    if (result) {
+                        Toast.makeText(AppActivity.this, "success", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(AppActivity.this, "error", Toast.LENGTH_SHORT).show();
+
+                    }
+                }
+            });
+
+    public void mRegisterReceiver() {
+
+
+    }
 }

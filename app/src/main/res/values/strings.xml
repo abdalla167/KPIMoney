@@ -8,6 +8,7 @@
     <string name="logged_in_as">you are logged in as </string>
     <string name="chat">Chat with us</string>
     <string name="logout">Log out</string>
+    <string name="developer_email_feedback">dev@gmail.com</string>
 
     <string name="confirm_otp">CONFIRM OTP</string>
     <string name="resendCode">Resend Code</string>
